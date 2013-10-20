@@ -2,7 +2,7 @@ require 'moneta'
 
 class PersistantPricingModel
 
-	def initialize(model, baseDir = './data', expiration = 1000 * 60 * 60 * 24)
+	def initialize(model, baseDir = './data', expiration = 60 * 60 * 24)
 		@model = model
 		@buy_prices = Moneta.new(:PStore, :file => baseDir + "/buy.pstore", :expires => true)
 		@sell_prices = Moneta.new(:PStore, :file => baseDir + "/sell.pstore", :expires => true)
