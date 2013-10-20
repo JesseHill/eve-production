@@ -1,0 +1,4 @@
+adapter: mysql2
+database:  odyssey11
+host: localhost
+username: root
