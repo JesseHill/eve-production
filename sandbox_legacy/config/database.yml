@@ -1,0 +1,4 @@
+adapter: mysql2
+database: rubicon
+host: localhost
+username: root
