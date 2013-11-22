@@ -30,6 +30,7 @@ GEM
     minitest (4.7.5)
     mocha (0.13.1)
       metaclass (~> 0.0.1)
+    moneta (0.7.20)
     money (6.0.0)
       i18n (~> 0.6.4)
     multi_json (1.7.9)
@@ -56,6 +57,7 @@ DEPENDENCIES
   activerecord
   activerecord-mysql-adapter
   mocha
+  moneta
   money
   mysql2
   nokogiri

@@ -8,3 +8,4 @@ gem 'rspec-mocks'
 gem 'mysql2'
 gem "mocha", :require => false
 gem 'money'
+gem 'moneta'

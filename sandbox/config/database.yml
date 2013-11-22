@@ -1,4 +1,4 @@
 adapter: mysql2
-database:  odyssey11
+database: rubicon
 host: localhost
 username: root
