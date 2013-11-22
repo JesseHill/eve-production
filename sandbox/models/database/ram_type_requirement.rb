@@ -1,5 +1,5 @@
 require 'active_record'
-require './models/database/ramActivity.rb'
+require_relative 'ram_activity'
 
 class RamTypeRequirement < ActiveRecord::Base
 	self.table_name = "ramTypeRequirements"

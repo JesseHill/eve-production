@@ -1,7 +1,6 @@
-require './models/database/invType.rb'
-require './models/build/buildNode.rb'
+require_relative '../inv_type.rb'
 
-class LineItem < BuildNode
+class Job
 
 	def initialize(key, quantity, wasteCalculator)
 		@item = key.is_a?(String) ? InvType.find_by_typeName(key) : InvType.find_by_typeID(key)

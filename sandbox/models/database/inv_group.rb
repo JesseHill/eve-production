@@ -1,5 +1,5 @@
 require 'active_record'
-require './models/database/invCategory.rb'
+require_relative 'inv_category'
 
 class InvGroup < ActiveRecord::Base
 	self.table_name = "invGroups"

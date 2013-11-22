@@ -1,10 +1,10 @@
-require_relative 'invBlueprintType'
-require_relative 'invTypeMaterial'
-require_relative 'invGroup'
-require_relative 'invMetaGroup'
-require_relative 'invMetaType'
-require_relative 'invMarketGroup'
-require_relative 'ramTypeRequirement'
+require_relative 'inv_blueprint_type'
+require_relative 'inv_type_material'
+require_relative 'inv_group'
+require_relative 'inv_meta_group'
+require_relative 'inv_meta_type'
+require_relative 'inv_market_group'
+require_relative 'ram_type_requirement'
 
 class InvType < ActiveRecord::Base
 	self.table_name = "invTypes"

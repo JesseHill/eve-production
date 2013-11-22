@@ -2,7 +2,7 @@
 
 require 'nokogiri'
 require 'open-uri'
-require './models/build/buildReport.rb'
+require_relatice '../models/build/build'
 
 class ConsoleSerializer
 

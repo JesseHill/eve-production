@@ -1,3 +1,4 @@
+require_relative '../database/inv_type'
 class BlueprintRepository
 
 	def material_level(blueprintTypeID)
