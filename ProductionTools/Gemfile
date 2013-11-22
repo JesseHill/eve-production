@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'activerecord'
+gem 'activerecord-mysql-adapter'
+gem 'nokogiri'
+gem 'rspec'
+gem 'rspec-mocks'
+gem 'mysql2'
+gem "mocha", :require => false
+gem 'money'

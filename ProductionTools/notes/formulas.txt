@@ -1,0 +1,11 @@
+quantity =
+Round(Base_Amount_Of_Material 
+	* ((1 + (Default_Blueprint_Waste_Factor / (1 + Blueprint_Material_Level))) 
+		+ (0.25 - (0.05 * Production_Efficiency_Skill))), 0)
+
+quantity =
+Round(793 
+	* ((1 + (10 / (1 + 25))) 
+		+ (0.25 - (0.05 * 5))), 0)
+
+		8592
