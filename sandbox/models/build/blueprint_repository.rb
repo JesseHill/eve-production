@@ -1,17 +1,28 @@
 require_relative '../database/inv_type'
+
 class BlueprintRepository
 
-	def material_level(blueprintTypeID)
-		blueprint = InvBlueprintType.find_by_blueprintTypeID(blueprintTypeID)
-		metaGroup = blueprint.inv_type.inv_meta_group
-		techII = metaGroup && metaGroup.metaGroupID > 1
-		isShip = blueprint.inv_type.inv_group.inv_category.is_ship?
+	def material_level(blueprint)
+		blueprint = InvBlueprintType.find_by_blueprintTypeID(blueprint) if blueprint.is_a? Numeric
+		blueprint = InvType.find_by_typeName(blueprint).inv_blueprint_type if blueprint.is_a? String
+		raise "Invalid argument" unless blueprint.is_a? InvBlueprintType
 
-		if isShip
-			return 50 unless techII
-			return blueprint.inv_type.inv_market_group.included_in_frigates? ? -3 : -1
+		# Check some stored list of owned bpos? 
+		# There doesn't seem to be an API that will allow this info to be grabbed dynamically.
+
+		# Punt to some default values.
+		default_material_level(blueprint)
+	end
+
+	private
+
+	def default_material_level(blueprint)
+		if blueprint.in_market_group?(:ships)
+			return blueprint.is_techII? ? -4 : 20 if blueprint.in_market_group?(:frigates)
+			return blueprint.is_techII? ? -1 : 50 if blueprint.in_market_group?(:cruisers)
+			return blueprint.is_techII? ? -1 : 60
 		end
 
-		return techII ? -4 : 75 
+		return techII ? -4 : 100 
 	end
 end

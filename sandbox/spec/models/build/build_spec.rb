@@ -1,5 +1,5 @@
-require 'spec_helper'
-require './models/build/build.rb'
+require_relative '../../spec_helper'
+require_relative '../../../models/build/build'
 
 describe Build do
 

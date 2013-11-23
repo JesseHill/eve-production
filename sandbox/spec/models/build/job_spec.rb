@@ -1,21 +1,21 @@
-require 'spec_helper'
-require './models/build/lineItem.rb'
-require './models/build/wasteCalculator.rb'
+require_relative '../../spec_helper'
+require_relative '../../../models/build/job'
+require_relative '../../../models/build/waste_calculator'
 
-describe LineItem do
+describe Job do
 
 	it 'should load item by id' do
-	 	item = LineItem.new(34, 1, mock('unused'));
+	 	item = Job.new(34, 1, mock('unused'));
 	 	item.name.should eq('Tritanium')	
 	end
 
 	it 'should load item by name' do
-	 	item = LineItem.new('Tritanium', 1, mock('unused'));
+	 	item = Job.new('Tritanium', 1, mock('unused'));
 	 	item.name.should eq('Tritanium')	
 	end
 
 	it 'should answer the correct quantity' do
-	 	item = LineItem.new('Tritanium', 15, mock('unused'));
+	 	item = Job.new('Tritanium', 15, mock('unused'));
 	 	item.quantity.should eq(15)
 	end
 
@@ -24,7 +24,7 @@ describe LineItem do
 	 	blueprintRepo.expects(:material_level).with(anything).returns(0).at_least_once
     	wasteCalc = WasteCalculator.new(5, blueprintRepo)
 
-		item = LineItem.new('250mm Railgun I', 1, wasteCalc);
+		item = Job.new('250mm Railgun I', 1, wasteCalc);
 		materials = item.materials
 		materials.length.should eq(5)
 		materials[34].should eq(9042)
@@ -39,7 +39,7 @@ describe LineItem do
 	 	blueprintRepo.expects(:material_level).with(anything).returns(-4).at_least_once
     	wasteCalc = WasteCalculator.new(5, blueprintRepo)
 
-		item = LineItem.new('250mm Railgun II', 1, wasteCalc);
+		item = Job.new('250mm Railgun II', 1, wasteCalc);
 		materials = item.materials
 		materials.length.should eq(10)
 		#Base
@@ -61,7 +61,7 @@ describe LineItem do
 	 	blueprintRepo.expects(:material_level).with(anything).returns(-4).at_least_once
     	wasteCalc = WasteCalculator.new(5, blueprintRepo)
 
-		item = LineItem.new('250mm Railgun II', 10, wasteCalc);
+		item = Job.new('250mm Railgun II', 10, wasteCalc);
 		materials = item.materials
 		materials.length.should eq(10)
 		#Base

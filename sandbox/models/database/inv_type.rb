@@ -9,6 +9,7 @@ require_relative 'ram_type_requirement'
 class InvType < ActiveRecord::Base
 	self.table_name = "invTypes"
 	self.primary_key = "typeID"
+	
 	has_one :inv_blueprint_type, :foreign_key => 'productTypeID'
 	has_one :inv_meta_type, :foreign_key => 'typeID'
 	has_one :inv_meta_group, through: :inv_meta_type
@@ -25,4 +26,13 @@ class InvType < ActiveRecord::Base
 	def is_skill?
 		inv_group.is_skill?
 	end
+
+	def is_techII?
+		inv_meta_group && inv_meta_group.is_techII?
+	end
+
+	def in_market_group?(group)
+		inv_market_group.included_in?(group)
+	end	
+
 end

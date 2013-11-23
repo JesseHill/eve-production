@@ -11,4 +11,12 @@ class InvBlueprintType < ActiveRecord::Base
 		manufacturing = RamActivity.find_by(activityName: "Manufacturing")
 		ram_type_requirements.select {|r| r.ram_activity == manufacturing}
 	end
+
+	def in_market_group?(group)
+		inv_type.in_market_group?(group)
+	end
+
+	def is_techII?
+		inv_type.is_techII?
+	end
 end
