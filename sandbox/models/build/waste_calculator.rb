@@ -10,6 +10,7 @@ class WasteCalculator
 	end	
 
 	def calculate_required_quantity(blueprint, quantity)
+		blueprint = blueprint.inv_blueprint_type if blueprint.is_a? InvType
 		materialLevel = @blueprintRepo.material_level(blueprint)
 		if materialLevel >= 0
 			required = quantity + (quantity * ((blueprint.wasteFactor.to_f / (materialLevel + 1)) / 100)).round
