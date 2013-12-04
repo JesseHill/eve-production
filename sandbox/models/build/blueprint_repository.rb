@@ -23,6 +23,6 @@ class BlueprintRepository
 			return blueprint.is_techII? ? -1 : 60
 		end
 
-		return techII ? -4 : 100 
+		return blueprint.is_techII? ? -4 : 100 
 	end
 end

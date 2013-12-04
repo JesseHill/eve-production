@@ -1,6 +1,6 @@
 require 'moneta'
 
-class PersistantPricingModel
+class PersistentPricingModel
 
 	def initialize(model, basePath = './data/pricing/default', expiration = 1000 * 60 * 60 * 24)
 		@model = model

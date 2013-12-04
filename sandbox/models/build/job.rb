@@ -1,36 +1,27 @@
-require_relative '../inv_type.rb'
+require_relative '../database/inv_type'
+require_relative 'node'
 
-class Job
+class Job < Node
 
-	def initialize(key, quantity, waste_calculator)
+	attr_accessor :runs
+
+	def initialize(key, runs)
 		@item = key.is_a?(String) ? InvType.find_by_typeName(key) : InvType.find_by_typeID(key)
-		if @item.nil?
-			puts "Failed to find item: #{key}"
-		end
-		@quantity = quantity
-		@waste_calculator = waste_calculator
-		@materials = Hash.new(0)
-		compute_materials_and_items()
-	end
-
-	def name
-		@item.typeName
-	end
-
-	def portionSize
-		@item.portionSize
-	end
-
-	def productionTime
-		@item.inv_blueprint_type.productionTime * @quantity
+		raise "Failed to find item: #{key}" if @item.nil?
+		
+		super(@item.typeName, runs)
 	end
 
 	def typeID
 		@item.typeID
 	end
 
-	def materials
-		@materials
+	def is_buildable?
+		blueprint
+	end
+
+	def blueprint
+		@item.inv_blueprint_type
 	end
 
 end

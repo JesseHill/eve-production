@@ -1,7 +1,5 @@
-class Build
+require_relative 'node'
 
-	def initialize(name, quantity = 1)
-		super(name, quantity)
-	end
+class Build < Node
 
 end

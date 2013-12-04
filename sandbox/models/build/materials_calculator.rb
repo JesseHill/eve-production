@@ -3,12 +3,24 @@ require_relative 'waste_calculator'
 class MaterialsCalculator
 
 	def initialize(waste_calculator)
-		@waste_calculator = waste_calculator;
+		@waste_calculator = waste_calculator
 	end
+
+	def visit(node)
+		if node.is_buildable?
+			node.data[:materials] = required_materials(node.blueprint, node.runs)
+		else
+			node.data[:materials] = node.children.each_with_object({}) { |n, h|
+				h.merge!(n.data[:materials]) { |k, l, r| l + r }
+			}
+		end
+	end	
 
 	def required_materials(blueprint, runs)
 		inv_type = blueprint.inv_type
-		ram_requirements = inv_type.ram_type_requirements_for_manufacturing.select { |r| !r.required_type.is_skill? }
+		ram_requirements = inv_type.
+			ram_type_requirements_for_manufacturing.
+			reject { |r| r.required_type.is_skill? }
 
 		materials = Hash[inv_type.inv_type_materials. # Create a hash of [type: quantity] from the following ...
 			each_with_object({}) { |m, h| h[m.required_type] = m.quantity }. # collect base materials

@@ -34,8 +34,8 @@ build = Build.new("Stuff")
 blueprintRepo = BlueprintRepository.new()
 wasteCalculator = WasteCalculator.new(5, blueprintRepo)
 
-InvType.where(groupID: 334).
-	each {|t| build.add(LineItem.new(t.typeID, 1000, wasteCalculator))}
+# InvType.where(groupID: 334).
+# 	each {|t| build.add(LineItem.new(t.typeID, 1000, wasteCalculator))}
 
 # InvType.where(groupID: 25).
 # 	joins(:inv_meta_group).
@@ -87,7 +87,9 @@ InvType.where(groupID: 334).
 
 # build.add(LineItem.new("Large Armor Repairer II", 100, wasteCalculator))
 # build.add(LineItem.new("Medium Armor Repairer II", 270, wasteCalculator))
-# build.add(LineItem.new("Co-Processor II", 50, wasteCalculator))
+# build.add(LineItem.new("Co-Processor II", 90, wasteCalculator))
+# build.add(LineItem.new("Hammerhead II", 10, wasteCalculator))
+# build.add(LineItem.new("Purifier", 12, wasteCalculator))
 # build.add(LineItem.new("Expanded Cargohold II", 60, wasteCalculator))
 # build.add(LineItem.new("Nanofiber Internal Structure II", 90, wasteCalculator))
 # build.add(LineItem.new("EM Ward Field II", 40, wasteCalculator))
@@ -130,7 +132,7 @@ InvType.where(groupID: 334).
 # build.add(LineItem.new("Capital Anti-EM Screen Reinforcer II", 2, wasteCalculator))
 
 # build.add(LineItem.new("Medium Armor Repairer I", 370, wasteCalculator))
-# build.add(LineItem.new("Co-Processor I", 130, wasteCalculator))
+build.add(LineItem.new("Rokh", 1, wasteCalculator))
 # build.add(LineItem.new("Nanofiber Internal Structure I", 40, wasteCalculator))
 # build.add(LineItem.new("EM Ward Field I", 40, wasteCalculator))
 # build.add(LineItem.new("Explosive Deflection Field I", 20, wasteCalculator))
@@ -190,7 +192,7 @@ InvType.where(groupID: 334).
 
 # build.add(LineItem.new("Large Armor Repairer I", 100, wasteCalculator))
 # build.add(LineItem.new("Medium Armor Repairer I", 270, wasteCalculator))
-# build.add(LineItem.new("Expanded Cargohold I", 60, wasteCalculator))
+# build.add(LineItem.new("Expanded Cargohold II", 300, wasteCalculator))
 # build.add(LineItem.new("250mm Railgun I", 390, wasteCalculator))
 # build.add(LineItem.new("Kinetic Deflection Field I", 20, wasteCalculator))
 # build.add(LineItem.new("Thermic Dissipation Field I", 10, wasteCalculator))
@@ -216,7 +218,7 @@ InvType.where(groupID: 334).
 # build.add(LineItem.new("Nanofiber Internal Structure II", 100, wasteCalculator))
 # build.add(LineItem.new("250mm Railgun II", 40, wasteCalculator))
 # build.add(LineItem.new("Sensor Booster II", 190, wasteCalculator))
-# build.add(LineItem.new("Warp Disruptor II", 130, wasteCalculator))
+# build.add(LineItem.new("Warp Disruptor II", 90, wasteCalculator))
 
 # build.add(LineItem.new("Executioner", 16, wasteCalculator))
 # build.add(LineItem.new("Inquisitor", 9, wasteCalculator))
@@ -250,6 +252,12 @@ InvType.where(groupID: 334).
 # build.add(LineItem.new("Pulse Shield Emitter", 1440, wasteCalculator))
 # build.add(LineItem.new("Gravimetric Sensor Cluster", 2160, wasteCalculator))
 # build.add(LineItem.new("Quantum Microprocessor", 1620, wasteCalculator))
+
+# build.add(LineItem.new("Astero", 1, wasteCalculator))
+# build.add(LineItem.new("Crow", 1, wasteCalculator))
+
+# build.add(LineItem.new("Purifier", 20, wasteCalculator))
+# build.add(LineItem.new("Expanded Cargohold II", 40, wasteCalculator))
 
 report = BuildReport.new(build, pricing)
 ConsoleSerializer.new(report).write()
