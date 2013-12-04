@@ -32,7 +32,6 @@ materials_calculator = MaterialsCalculator.new(waste_calculator)
 
 # Set up our list of jobs
 jobs = [
-	["250mm Railgun II", 100],
 	["Warp Scrambler II", 100],
 	["Expanded Cargohold II", 100]
 ].map { |name, count| Job.new(name, count) }
