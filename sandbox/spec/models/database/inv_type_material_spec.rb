@@ -1,6 +1,6 @@
-require 'spec_helper'
-require './models/database/invTypeMaterial.rb'
-require './models/database/invType.rb'
+require_relative '../../spec_helper'
+require_relative '../../../models/database/inv_type_material.rb'
+require_relative '../../../models/database/inv_type.rb'
 
 describe InvTypeMaterial do
 

@@ -1,7 +1,7 @@
-require 'spec_helper'
-require './models/database/ramTypeRequirement.rb'
-require './models/database/invType.rb'
-require './models/database/ramActivity.rb'
+require_relative '../../spec_helper'
+require_relative '../../../models/database/ram_type_requirement.rb'
+require_relative '../../../models/database/inv_type.rb'
+require_relative '../../../models/database/ram_activity.rb'
 
 describe RamTypeRequirement do
 

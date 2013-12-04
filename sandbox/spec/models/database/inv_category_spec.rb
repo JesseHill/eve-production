@@ -1,5 +1,5 @@
-require 'spec_helper'
-require './models/database/invCategory.rb'
+require_relative '../../spec_helper'
+require_relative '../../../models/database/inv_category.rb'
 
 describe InvCategory do
 

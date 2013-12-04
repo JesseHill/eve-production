@@ -1,5 +1,5 @@
-require 'spec_helper'
-require './models/database/invGroup.rb'
+require_relative '../../spec_helper'
+require_relative '../../../models/database/inv_group.rb'
 
 describe InvGroup do
 
