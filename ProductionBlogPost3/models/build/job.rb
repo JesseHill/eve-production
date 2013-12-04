@@ -3,8 +3,6 @@ require_relative 'node'
 
 class Job < Node
 
-	attr_accessor :runs
-
 	def initialize(key, runs)
 		@item = key.is_a?(String) ? InvType.find_by_typeName(key) : InvType.find_by_typeID(key)
 		raise "Failed to find item: #{key}" if @item.nil?

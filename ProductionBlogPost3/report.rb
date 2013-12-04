@@ -19,23 +19,28 @@ require_relative './presentation/console_serializer'
 dbconfig = YAML::load(File.open('./config/database.yml'))
 ActiveRecord::Base.establish_connection(dbconfig)
 
+# Create our pricing data.
 jita = PersistentPricingModel.new(LowSellOrdersPricingModel.new(MapSolarSystems.find_by_solarSystemName('Jita')))
 amarr = PersistentPricingModel.new(LowSellOrdersPricingModel.new(MapSolarSystems.find_by_solarSystemName('Amarr')))
 markets = CompositePricingModel.new([jita, amarr])
+pricing_calculator = PricingCalculator.new(markets)
 
+# Create the object needed to compute material costs.
 blueprint_repository = BlueprintRepository.new()
 waste_calculator = WasteCalculator.new(5, blueprint_repository)
 materials_calculator = MaterialsCalculator.new(waste_calculator)
-pricing_calculator = PricingCalculator.new(markets)
 
+# Set up our list of jobs
 jobs = [
 	["250mm Railgun II", 100],
 	["Warp Scrambler II", 100],
 	["Expanded Cargohold II", 100]
-].map { |name,count| Job.new(name, count) }
+].map { |name, count| Job.new(name, count) }
 
+# Run our visitors to generate our build data.
 build = Build.new("Initial Build", 1, jobs).
 	accept(materials_calculator).
 	accept(pricing_calculator)
 
+# Print out what we've found.
 ConsoleSerializer.new(build).write()

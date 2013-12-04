@@ -9,6 +9,7 @@ class BlueprintRepository
 
 		# Check some stored list of owned bpos? 
 		# There doesn't seem to be an API that will allow this info to be grabbed dynamically.
+		# We might prefer default values in most cases anyway to do fair comparisons between items.
 
 		# Punt to some default values.
 		default_material_level(blueprint)

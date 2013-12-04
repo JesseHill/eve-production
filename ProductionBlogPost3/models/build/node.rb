@@ -9,8 +9,13 @@ class Node
 		@data = {}
 	end
 
+	def is_buildable?
+		false
+	end	
+
 	def accept(visitor)
 		copy = self.clone
+		copy.data = self.data.clone
 		copy.children = @children.map { |c| c.accept(visitor) }
 		visitor.visit(copy)
 		copy
@@ -21,12 +26,9 @@ class Node
 		yield self
 	end
 
-	def is_buildable?
-		false
-	end
-
 	def sort_by(&block)
 		copy = self.clone
+		copy.data = self.data.clone
 		copy.children = @children.sort_by(&block)
 		copy
 	end
