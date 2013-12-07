@@ -21,9 +21,10 @@ class Node
 		}
 	end
 
-	def each(&block)
+	def each(direction = :top_down, &block)
+		yield self if direction == :top_down
 		@children.each { |c| c.each(&block) }
-		yield self
+		yield self if direction == :bottom_up
 	end
 
 	def sort_by(&block)

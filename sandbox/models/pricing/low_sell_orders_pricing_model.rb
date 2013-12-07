@@ -36,5 +36,6 @@ class LowSellOrdersPricingModel
 
 	def sell_price(id)
 		price(id)
-	end	
+	end
+	
 end

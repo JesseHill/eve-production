@@ -25,7 +25,7 @@ class MaterialsCalculator
 		materials = Hash[inv_type.inv_type_materials. # Create a hash of [type: quantity] from the following ...
 			each_with_object({}) { |m, h| h[m.required_type] = m.quantity }. # collect base materials
 			merge(recyleable_requirements(ram_requirements)) { |k, l, r| l - r }. # remove recycleable materials
-			select { |k, v| v > 0}. # remove empty elements
+			select { |k, v| v > 0 }. # remove empty elements
 			map { |type, quantity| # Adjust for waste and number of runs
 				[type, @waste_calculator.calculate_required_quantity(inv_type, quantity) * runs]
 			}]

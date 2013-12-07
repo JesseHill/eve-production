@@ -4,8 +4,8 @@ class PersistentPricingModel
 
 	def initialize(model, basePath = './data/pricing/default', expiration = 1000 * 60 * 60 * 24)
 		@model = model
-		@buy_prices = Moneta.new(:PStore, :file => basePath + "_buy.pstore", :expires => true)
-		@sell_prices = Moneta.new(:PStore, :file => basePath + "_sell.pstore", :expires => true)
+		@buy_prices = Moneta.new(:PStore, :file => "#{basePath}_#{model.name}_buy.pstore", :expires => true)
+		@sell_prices = Moneta.new(:PStore, :file => "#{basePath}_#{model.name}_sell.pstore", :expires => true)
 		@expiration = expiration
 	end
 
@@ -22,4 +22,8 @@ class PersistentPricingModel
 		@sell_prices.store(id, price, :expires => @expiration)
 		price
 	end	
+
+	def name
+		@model.name
+	end
 end

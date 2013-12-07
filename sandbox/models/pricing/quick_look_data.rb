@@ -22,7 +22,6 @@ class QuickLookData
 	end
 
 	def data(args)
-		puts "Opening #{uri(args)}"
 		open(uri(args))
 	end
 end

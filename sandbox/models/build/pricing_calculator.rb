@@ -16,7 +16,8 @@ class PricingCalculator
 
 		# Value	
 		if node.is_buildable?
-			node.data[:value] = node.runs * @market_data.sell_price(node.typeID)	
+			node.data[:value_per_unit] = @market_data.sell_price(node.typeID)	
+			node.data[:value] = node.runs * node.data[:value_per_unit]
 		else
 			node.data[:value] = node.children.reduce(0) { |memo, node| memo += node.data[:value] }	
 		end
