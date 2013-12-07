@@ -9,11 +9,15 @@ class ConsoleSerializer
 
 	def initialize(build, markets)
 		@build = build
-		@shopping_list = ShoppingList.new(@build.data[:materials], markets)
+		@shopping_list = ShoppingList.new(markets, @build.data[:materials])
 	end
 
 	def format_isk(value)
 		Money.new(value * 100).format(:symbol => "ISK", :symbol_position => :after)
+	end
+
+	def format_volume(value)
+		Money.new(value.ceil * 100).format(:symbol => "m3", :symbol_position => :after)
 	end
 
 	def write_banner(text)
@@ -24,7 +28,7 @@ class ConsoleSerializer
 	end
 	
 	def write_line(text = "", level = 0)
-		puts " " * level * 2 + text
+		puts " " * level * 3 + text
 	end
 
 	def write()
@@ -47,15 +51,12 @@ class ConsoleSerializer
 			}	
 
 		write_banner "Shopping List:"
-		@shopping_list.by_market_and_group.each { |market, groups|
-			write_line market.name
-			groups.each { |group, materials|
-				# write_line "#{group.marketGroupName}", 1
-				materials.each { |m, q|
-					write_line "#{m.typeName} - #{q} - #{format_isk(market.buy_price(m.typeID))}", 1
-				}
-				write_line
-			}
+		@shopping_list.each_with_depth { |node, depth|
+			if node.has_children?
+				write_line("#{node.name} - Volume: #{format_volume(node.volume)} Cost: #{format_isk(node.cost)}", depth)
+			else
+				write_line("#{node.name} - #{node.quantity} - #{format_isk(node.cost_per_unit)} - #{format_isk(node.cost)}", depth)
+			end	
 		}			
 	end
 end

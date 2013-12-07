@@ -14,7 +14,7 @@ require_relative './models/build/blueprint_repository'
 require_relative './models/pricing/low_sell_orders_pricing_model'
 require_relative './models/pricing/composite_pricing_model'
 require_relative './models/pricing/persistent_pricing_model'
-require_relative './models/pricing/shopping_list'
+require_relative './models/shopping/shopping_list'
 require_relative './presentation/console_serializer'
 
 dbconfig = YAML::load(File.open('./config/database.yml'))
