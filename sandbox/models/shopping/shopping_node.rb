@@ -7,6 +7,11 @@ class ShoppingNode
 		@pricing = pricing
 		compute_volume
 		compute_cost
+		sort_children
+	end
+
+	def sort_children
+		@children = @children.sort_by { |m| m.name} if @children
 	end
 
 	def has_children?

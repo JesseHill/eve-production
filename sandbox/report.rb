@@ -36,34 +36,17 @@ jobs = [
 	["Warp Scrambler II", 100],
 	["Expanded Cargohold II", 100],
 	["Arazu", 2],
+	["250mm Railgun II", 20],
 ].map { |name, count| Job.new(name, count) }
 
 # Run our visitors to generate our build data.
 build = Build.new("Overall Build", 1, jobs).
 	accept(materials_calculator).
-	accept(pricing_calculator)
+	accept(pricing_calculator).
+	sort_by { |n| n.data[:profit_margin] }
 
 # Print out what we've found.
-ConsoleSerializer.new(build, markets).write()
-
-# items = { 
-# 	InvType.find_by_typeName("Tritanium") => 1000,
-# 	InvType.find_by_typeName("Morphite") => 100,
-# 	InvType.find_by_typeName("Construction Blocks") => 500,
-# 	InvType.find_by_typeName("Guidance Systems") => 500,
-# 	InvType.find_by_typeName("Hypersynaptic Fibers") => 500,
-# 	InvType.find_by_typeName("Ferrogel") => 500,
-# 	InvType.find_by_typeName("250mm Railgun I") => 500,
-# }
-
-# shopping_list = ShoppingList.new(items, markets)
-# shopping_list.by_market_and_group.each { |market, groups|
-# 	puts "-" * 10
-# 	puts market.name
-# 	groups.each { |group, materials|
-# 		puts "\t #{group.marketGroupName}"
-# 		materials.each { |m, q|
-# 			puts "\t\t #{m.typeName} - #{q} - #{market.buy_price(m.typeID)}"
-# 		}
-# 	}
-# }
+writer = ConsoleSerializer.new()
+shopping_list = ShoppingList.new(markets, build.data[:materials])
+writer.write_build(build)
+writer.write_shopping_list(shopping_list)
