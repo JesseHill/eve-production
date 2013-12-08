@@ -3,6 +3,7 @@
 require 'optparse'
 require 'ostruct'
 
+require_relative '../config/active_record_config'
 require_relative 'manufacturing_report'
 require_relative '../models/build/build'
 require_relative '../models/build/job'
@@ -18,6 +19,31 @@ class LineItemOptionsParser
   	end
   end
 
+  def self.build_jobs_from_file(file)
+	begin
+		text = File.read(file)
+	rescue
+		puts
+		puts "Error reading jobs file."
+		puts
+		exit
+	end
+	build_jobs_from_text(text)
+  end
+
+  def self.build_jobs_from_text(jobText)
+  	begin
+      	pairs = Hash[*jobText.split(/[:\n]+/)]
+	rescue
+		puts
+		puts "Error parsing job text: \"#{jobText}\""
+		puts
+		puts opts.help
+		exit
+	end
+  	pairs.map { |k, v| create_job(k, v) }
+  end
+
   def self.parse(args)
     options = OpenStruct.new
     options.jobs = []
@@ -26,37 +52,13 @@ class LineItemOptionsParser
       opts.banner = "Usage: line_item_report.rb [options]"
 
       opts.on("-f", "--file BUILD_FILE", "Specify an item: quantity file to load jobs from") do |file|
-      	begin
-      		text = File.read(file)
-	      	pairs = Hash[*text.split(/[:\n]+/)]
-		rescue
-			puts
-			puts "Error reading jobs file."
-			puts
-			exit
-		end
-      	pairs.each { |k, v|
-      		options.jobs << create_job(k, v)
-      	}
+      	options.jobs.push *build_jobs_from_file(file)
       end
 
       opts.on("-j", "--job \"item: quantity\"", "Specify an '\"item: quantity\"' job") do |jobText|
-      	begin
-	      	pairs = Hash[*jobText.split(/[:\n]+/)]
-		rescue
-			puts
-			puts "Error parsing job text: \"#{jobText}\""
-			puts
-			puts opts.help
-			exit
-		end
-      	pairs.each { |k, v|
-      		options.jobs << create_job(k, v)
-      	}
-
+      	options.jobs.push *build_jobs_from_text(jobText)
       end
 
-      # No argument, shows at tail.  This will print an options summary.
       opts.on_tail("-h", "--help", "Show this message") do
         puts opts
         exit
@@ -69,6 +71,7 @@ class LineItemOptionsParser
 
 end
 
+ActiveRecordConfig.init
 report = ManufacturingReport.new
 options = LineItemOptionsParser.parse(ARGV)
 

@@ -20,9 +20,6 @@ require_relative '../presentation/console_serializer'
 class ManufacturingReport
 
 	def initialize
-		dbconfig = YAML::load(File.open('./config/database.yml'))
-		ActiveRecord::Base.establish_connection(dbconfig)
-
 		# Create our pricing data.
 		jita = PersistentPricingModel.new(LowSellOrdersPricingModel.new(MapSolarSystems.find_by_solarSystemName('Jita')))
 		amarr = PersistentPricingModel.new(LowSellOrdersPricingModel.new(MapSolarSystems.find_by_solarSystemName('Amarr')))
