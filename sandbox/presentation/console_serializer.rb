@@ -12,7 +12,7 @@ class ConsoleSerializer
 	end
 
 	def format_volume(value)
-		Money.new(value.ceil * 100).format(:symbol => "m3", :symbol_position => :after)
+		Money.new(value.ceil * 100).format(:symbol => "m3", :symbol_position => :after, :no_cents => true)
 	end
 
 	def write_banner(text)

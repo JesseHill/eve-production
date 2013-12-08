@@ -17,6 +17,23 @@ class InvType < ActiveRecord::Base
 	belongs_to :inv_market_group, :foreign_key => 'marketGroupID'
 	has_many :inv_type_materials, :foreign_key => 'typeID'
 	has_many :ram_type_requirements, through: :inv_blueprint_type
+
+	@@packaged_volumes = {
+		shuttles: 500,
+		frigates: 2500,
+		mining_barges: 3750,
+		destroyers: 5000,
+		cruisers: 10000,
+		industrial_ships: 20000,
+		battlecruisers: 15000,
+		battleships: 50000,
+		capital_ships: 1000000,
+	}
+
+	def packaged_volume
+		return volume unless in_market_group?(:ships)
+		@@packaged_volumes.detect { |k,v| in_market_group?(k) }[1]
+	end
 	
 	def ram_type_requirements_for_manufacturing
 		return [] unless inv_blueprint_type

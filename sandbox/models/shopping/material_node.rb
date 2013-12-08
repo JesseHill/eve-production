@@ -11,7 +11,7 @@ class MaterialNode < ShoppingNode
 	end
 
 	def compute_volume
-		@volume = @item.volume * @quantity
+		@volume = @item.packaged_volume * @quantity
 	end
 
 	def cost_per_unit
