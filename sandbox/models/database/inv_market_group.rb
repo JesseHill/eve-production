@@ -14,4 +14,10 @@ class InvMarketGroup < ActiveRecord::Base
 		parent_group.nil? ? false : parent_group.included_in?(name)
 	end
 
+	def leaf_groups
+		hasTypes ?
+			self :
+			child_groups.flat_map { |g| g.leaf_groups }
+	end
+
 end

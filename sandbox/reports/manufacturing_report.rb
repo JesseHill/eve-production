@@ -38,14 +38,17 @@ class ManufacturingReport
 		@writer = ConsoleSerializer.new()
 	end
 
-	def run(build)
+	def run(build, print_shopping_list = true)
 		build = build.
 			accept(@materials_calculator).
 			accept(@pricing_calculator).
 			sort_by { |n| n.data[:profit_margin] }
-		shopping_list = ShoppingList.new(@markets, build.data[:materials])
 
 		@writer.write_build(build)
-		@writer.write_shopping_list(shopping_list)
+
+		if print_shopping_list
+			shopping_list = ShoppingList.new(@markets, build.data[:materials])
+			@writer.write_shopping_list(shopping_list)
+		end
 	end
 end

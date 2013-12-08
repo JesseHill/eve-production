@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<evec_api method="quicklook" version="2.0">
+      <quicklook>
+            <item>34</item>
+            <itemname>Tritanium</itemname>
+            <regions/>
+            <hours>360</hours>
+            <minqty>10001</minqty>
+            <sell_orders>
+                  <order id="3229388048">
+                        <region>10000002</region>
+                        <station>60003760</station>
+                        <station_name>Jita IV - Moon 4 - Caldari Navy Assembly Plant</station_name>
+                        <security>0.9</security>
+                        <range>32767</range>
+                        <price>4.80</price>
+                        <vol_remain>97197771</vol_remain>
+                        <min_volume>1</min_volume>
+                        <expires>2014-01-18</expires>
+                        <reported_time>10-20 19:50:01</reported_time>
+                  </order>
+            </sell_orders>
+      </quicklook>
+</evec_api>
