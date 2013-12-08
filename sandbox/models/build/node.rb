@@ -4,7 +4,7 @@ class Node
 
 	def initialize(name, runs = 1, children = [])
 		@name = name
-		@runs = runs
+		@runs = Integer(runs)
 		@children = children
 		@data = {}
 	end
