@@ -10,6 +10,10 @@ class Job < Node
 		super(@item.typeName, runs)
 	end
 
+	def portionSize
+		@item.portionSize
+	end
+
 	def typeID
 		@item.typeID
 	end
