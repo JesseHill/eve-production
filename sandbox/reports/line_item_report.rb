@@ -1,11 +1,10 @@
 #!/usr/bin/ruby
+require 'optparse'
+require 'ostruct'
 
 require_relative 'manufacturing_report'
 require_relative '../models/build/build'
 require_relative '../models/build/job'
-require 'optparse'
-require 'ostruct'
-require 'pp'
 
 class LineItemOptionsParser
 
