@@ -27,6 +27,12 @@ class Node
 		yield self if direction == :bottom_up
 	end
 
+	def each_with_depth(depth = 0, direction = :top_down, &block)
+		yield(self, depth) if direction == :top_down
+		@children.each { |c| c.each_with_depth(depth + 1, direction, &block) } if @children
+		yield(self, depth) if direction == :bottom_up
+	end	
+
 	def sort_by(&block)
 		self.clone.tap { |copy|
 			copy.data = @data.clone

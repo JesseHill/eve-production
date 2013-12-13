@@ -24,7 +24,9 @@ class PricingCalculator
 
 		# Profit
 		node.data[:profit] = node.data[:value] - node.data[:material_cost]
-		node.data[:profit_margin] = node.data[:profit] / node.data[:material_cost] 
+		node.data[:profit_margin] = node.data[:material_cost] > 0 ?
+			node.data[:profit] / node.data[:material_cost] :
+			1
 	end	
 
 end	

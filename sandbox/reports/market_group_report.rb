@@ -6,13 +6,14 @@ require 'ostruct'
 require_relative '../config/active_record_config'
 require_relative '../models/build/build'
 require_relative '../models/build/job'
-require_relative 'manufacturing_report'
+require_relative 'report_factory'
 
 class MarketGroupOptionsParser
 
   def self.parse(args)
     options = OpenStruct.new
     options.jobs = []
+    options.report_type = :manufacturing
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: market_group_report.rb [options]"
@@ -25,6 +26,10 @@ class MarketGroupOptionsParser
       	groups = InvMarketGroup.where(marketGroupName: name)
       	options.marketGroupID = groups.detect { |g| !g.description.include?('Blueprint')}.marketGroupID
       end
+
+      opts.on("-r", "--report REPORT_TYPE", "Specify a report type to run.") do |report|
+      	options.report_type = report.to_sym
+      end      
 
       opts.on_tail("-h", "--help", "Show this message") do
         puts opts
@@ -40,11 +45,8 @@ end
 
 class MarketGroupReport
 
-	def initialize(marketGroupID)
-		@report = ManufacturingReport.new
-
+	def initialize(marketGroupID, report_type)	
 		group = InvMarketGroup.find_by_marketGroupID(marketGroupID)
-
 		raise "No market group found for ID #{marketGroupID}" unless group
 
 		group_ids = group.
@@ -58,10 +60,11 @@ class MarketGroupReport
 			}
 
 		@build = Build.new(group.marketGroupName, jobs)
+		@report = ReportFactory.create(report_type)
 	end
 
 	def run()
-		@report.run(@build, false)		
+		@report.run(@build, {print_shopping_list: false})		
 	end
 end
 
@@ -73,5 +76,5 @@ if !ARGV.empty?
 		MarketGroupOptionsParser.parse(["-h"])
 		exit
 	end
-	MarketGroupReport.new(options.marketGroupID).run
+	MarketGroupReport.new(options.marketGroupID, options.report_type).run
 end

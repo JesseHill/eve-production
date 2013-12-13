@@ -19,7 +19,7 @@ class BlueprintRepository
 
 	def default_material_level(blueprint)
 		if blueprint.in_market_group?(:ships)
-			return blueprint.is_techII? ? -4 : 20 if blueprint.in_market_group?(:frigates)
+			return blueprint.is_techII? ? -3 : 20 if blueprint.in_market_group?(:frigates)
 			return blueprint.is_techII? ? -1 : 50 if blueprint.in_market_group?(:cruisers)
 			return blueprint.is_techII? ? -1 : 60
 		end

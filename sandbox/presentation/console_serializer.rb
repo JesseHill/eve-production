@@ -8,18 +8,27 @@ require_relative '../models/build/build'
 class ConsoleSerializer
 
 	def format_isk(value)
-		Money.new(value * 100).format(:symbol => "ISK", :symbol_position => :after)
+		Money.new(value * 100).format(
+			:symbol => "ISK", 
+			:symbol_position => :after,
+			:sign_before_symbol => true
+			# :sign_before_symbol => false
+		)
 	end
 
 	def format_volume(value)
-		Money.new(value.ceil * 100).format(:symbol => "m3", :symbol_position => :after, :no_cents => true)
+		Money.new(value.ceil * 100).format(
+			:symbol => "m3", 
+			:symbol_position => :after, 
+			:no_cents => true)
 	end
 
-	def write_banner(text)
+	def write_banner(text, double_wide = false)
+		width = double_wide ? 100 : 50;
 		puts ""
-		puts "-" * 50
+		puts "-" * width
 		puts text
-		puts "-" * 50
+		puts "-" * width
 	end
 	
 	def write_line(text = "", level = 0)
@@ -29,8 +38,8 @@ class ConsoleSerializer
 	def write_build(build, write_materials = false)
 		build.
 			sort_by { |node| node.data[:profit_margin] }.
-			each { |node| 
-				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name)
+			each_with_depth { |node, depth| 
+				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
 				write_line "Cost: #{format_isk(node.data[:material_cost])}"
 				write_line "Value: #{format_isk(node.data[:value])}"
 				write_line "Value Per Unit: #{format_isk(node.data[:value_per_unit])}" if node.is_buildable?
@@ -60,6 +69,18 @@ class ConsoleSerializer
 			end	
 		}			
 	end
+
+	def write_reprocessing_data(build)
+		build.
+			sort_by { |node| node.data[:reprocessing_profit_margin] }.
+			each_with_depth { |node, depth| 
+				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
+				write_line "Cost: #{format_isk(node.data[:reprocessing_cost])}"
+				write_line "Value: #{format_isk(node.data[:reprocessing_value])}"
+				write_line "Profit: #{format_isk(node.data[:reprocessing_profit])}"
+				write_line "Profit Margin: #{(node.data[:reprocessing_profit_margin] * 100).round(2)} %"
+            }
+    end
 end
 
 

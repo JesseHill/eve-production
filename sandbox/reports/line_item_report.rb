@@ -4,9 +4,9 @@ require 'optparse'
 require 'ostruct'
 
 require_relative '../config/active_record_config'
-require_relative 'manufacturing_report'
 require_relative '../models/build/build'
 require_relative '../models/build/job'
+require_relative 'report_factory'
 
 class LineItemOptionsParser
 
@@ -20,33 +20,30 @@ class LineItemOptionsParser
   end
 
   def self.build_jobs_from_file(file)
-	begin
-		text = File.read(file)
-	rescue
-		puts
-		puts "Error reading jobs file."
-		puts
-		exit
-	end
-	build_jobs_from_text(text)
+  	begin
+  		text = File.read(file)
+  	rescue
+  		puts "\nError reading jobs file.\n"
+  		exit
+  	end
+  	build_jobs_from_text(text)
   end
 
   def self.build_jobs_from_text(jobText)
   	begin
       	pairs = Hash[*jobText.split(/[:\n]+/)]
-	rescue
-		puts
-		puts "Error parsing job text: \"#{jobText}\""
-		puts
-		puts opts.help
-		exit
-	end
+  	rescue
+  		puts "\nError parsing job text: \"#{jobText}\"\n"
+  		puts opts.help
+  		exit
+  	end
   	pairs.map { |k, v| create_job(k, v) }
   end
 
   def self.parse(args)
     options = OpenStruct.new
     options.jobs = []
+    options.report_type = :manufacturing
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: line_item_report.rb [options]"
@@ -58,6 +55,10 @@ class LineItemOptionsParser
       opts.on("-j", "--job \"item: quantity\"", "Specify an '\"item: quantity\"' job") do |jobText|
       	options.jobs.push *build_jobs_from_text(jobText)
       end
+
+      opts.on("-r", "--report REPORT_TYPE", "Specify a report type to run.") do |report|
+        options.report_type = report.to_sym
+      end      
 
       opts.on_tail("-h", "--help", "Show this message") do
         puts opts
@@ -72,12 +73,11 @@ class LineItemOptionsParser
 end
 
 ActiveRecordConfig.init
-report = ManufacturingReport.new
+
 options = LineItemOptionsParser.parse(ARGV)
 
 if options.jobs.empty?
 	LineItemOptionsParser.parse(["-h"])
 	exit
 end
-
-report.run(Build.new("Line Item Build", options.jobs))
+ReportFactory.create(options.report_type).run(Build.new("Line Item Build", options.jobs))

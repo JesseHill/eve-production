@@ -16,7 +16,7 @@ class InvMarketGroup < ActiveRecord::Base
 
 	def leaf_groups
 		hasTypes ?
-			self :
+			[self] :
 			child_groups.flat_map { |g| g.leaf_groups }
 	end
 
