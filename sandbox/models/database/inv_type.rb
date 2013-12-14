@@ -72,13 +72,13 @@ class InvType < ActiveRecord::Base
 	end
 
 	def base_item
-		return self if is_techI?
+		return self unless is_techII?
 
 		# Not sure how to get the base item associated with a tech II item. 
 		# Maybe this is the only recyclable ram requirement?
 		# Throwing an exception to fail early if this is not true.
 		recyclable_items = ram_type_requirements_for_manufacturing.select { |r| r.recycle }
-		raise 'Unsupported type!' if recyclable_items.size > 1
+		raise "Unsupported type #{typeName}!" if recyclable_items.size != 1
 
 		ram_type_requirements_for_manufacturing
 			.detect { |r| r.recycle }

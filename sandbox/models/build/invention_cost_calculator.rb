@@ -7,6 +7,8 @@ class InventionCostCalculator
 	end
 
 	def cost(item)
+		return 0 unless item.is_techII?
+
 		ram_requirements_cost = item.ram_type_requirements_for_invention.
 			select { |r| r.required_type.in_market_group?(:datacores) }.
 			inject(0) { |memo, r| 
@@ -22,6 +24,8 @@ class InventionCostCalculator
 	end
 
 	def cost_per_run(item)
+		return 0 unless item.is_techII?
+
 		cost(item) / @calculator.chance(item) / @calculator.runs(item)
 	end
 

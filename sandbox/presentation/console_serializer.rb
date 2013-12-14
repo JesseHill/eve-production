@@ -19,9 +19,13 @@ class ConsoleSerializer
 			sort_by { |node| node.data[:profit_margin] }.
 			each_with_depth { |node, depth| 
 				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
-				write_line "Material Cost: #{Formatting.format_isk(node.data[:material_cost])}"
-				write_line "Invention Cost: #{Formatting.format_isk(node.data[:invention_cost])}"
-				write_line "Total Cost: #{Formatting.format_isk(node.data[:cost])}"
+				if node.data[:invention_cost] > 0
+					write_line "Material Cost: #{Formatting.format_isk(node.data[:material_cost])}"
+					write_line "Invention Cost: #{Formatting.format_isk(node.data[:invention_cost])}"
+					write_line "Total Cost: #{Formatting.format_isk(node.data[:cost])}"
+				else
+					write_line "Cost: #{Formatting.format_isk(node.data[:cost])}"
+				end
 				write_line "Value: #{Formatting.format_isk(node.data[:value])}"
 				write_line "Value Per Unit: #{Formatting.format_isk(node.data[:value_per_unit])}" if node.is_buildable?
 				write_line "Profit: #{Formatting.format_isk(node.data[:profit])}"
