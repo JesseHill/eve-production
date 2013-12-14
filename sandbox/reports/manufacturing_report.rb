@@ -9,8 +9,8 @@ require_relative '../presentation/console_serializer'
 class ManufacturingReport
 
 	def initialize
-		# Create our pricing data.
-		@pricing_calculator = PricingCalculator.new(DefaultPricingModel.new().pricing)
+		@pricing = DefaultPricingModel.new().pricing
+		@pricing_calculator = PricingCalculator.new(@pricing)
 
 
 		# Create the objects needed to compute material costs.
@@ -31,7 +31,7 @@ class ManufacturingReport
 		@writer.write_build(build)
 
 		if options[:print_shopping_list]
-			shopping_list = ShoppingList.new(@markets, build.data[:materials])
+			shopping_list = ShoppingList.new(@pricing, build.data[:materials])
 			@writer.write_shopping_list(shopping_list)
 		end
 	end
