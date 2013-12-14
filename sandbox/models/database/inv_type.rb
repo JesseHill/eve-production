@@ -44,6 +44,10 @@ class InvType < ActiveRecord::Base
 		inv_group.is_skill?
 	end
 
+	def is_ship?
+		inv_group.is_ship?
+	end
+
 	def is_techII?
 		inv_meta_group && inv_meta_group.is_techII?
 	end

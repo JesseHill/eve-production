@@ -10,4 +10,8 @@ class InvGroup < ActiveRecord::Base
 	def is_skill?
 		inv_category.is_skill?
 	end
+
+	def is_ship?
+		inv_category.is_ship?
+	end
 end
