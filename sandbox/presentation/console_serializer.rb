@@ -23,6 +23,12 @@ class ConsoleSerializer
 			:no_cents => true)
 	end
 
+	def format_quantity(value)
+		Money.new(value.ceil * 100).format(
+			:symbol => "", 
+			:no_cents => true)
+	end	
+
 	def write_banner(text, double_wide = false)
 		width = double_wide ? 100 : 50;
 		puts ""
@@ -52,7 +58,7 @@ class ConsoleSerializer
                     node.data[:materials].each { |m, q|
                         per_unit = format_isk(costs[m][:per_unit])
                         total = format_isk(costs[m][:total] * 100)
-                        write_line("#{q} #{m.typeName} - per unit: #{per_unit} - total: #{total}", 1)
+                        write_line("#{format_quantity(q)} #{m.typeName} - per unit: #{per_unit} - total: #{total}", 1)
                     }
                 end
             }
@@ -65,7 +71,7 @@ class ConsoleSerializer
 				write_line
 				write_line("#{node.name} - Volume: #{format_volume(node.volume)} Cost: #{format_isk(node.cost)}", depth)
 			else
-				write_line("#{node.quantity} - #{node.name} - #{format_isk(node.cost_per_unit)} - #{format_isk(node.cost)}", depth)
+				write_line("#{format_quantity(node.quantity)} - #{node.name} - #{format_isk(node.cost_per_unit)} - #{format_isk(node.cost)}", depth)
 			end	
 		}			
 	end
