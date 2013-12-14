@@ -21,6 +21,7 @@ class InventionProbabilityCalculator
 
 	def runs(item)
 		return (1 + @decryptor_repo.max_run_modifier(@strategy.decryptor(item))) if item.is_ship?
+		return (10 + @decryptor_repo.max_run_modifier(@strategy.decryptor(item))) if item.in_market_group?(:ship_equipment)
 		raise "Runs for #{item.typeName} not yet supported."
 	end
 
