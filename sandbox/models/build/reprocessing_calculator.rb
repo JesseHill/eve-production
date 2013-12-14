@@ -7,7 +7,7 @@ class ReprocessingCalculator
 	def visit(node)
 		# Costs
 		if node.is_buildable?
-			node.data[:reprocessing_cost_per_unit] = @market_data.buy_price(node.typeID)	
+			node.data[:reprocessing_cost_per_unit] = @market_data.buy_price(node)	
 			node.data[:reprocessing_cost] = node.runs * node.data[:reprocessing_cost_per_unit]
 		else
 			node.data[:reprocessing_cost] = node.children.reduce(0) { |memo, node| 
@@ -18,7 +18,7 @@ class ReprocessingCalculator
 		# Value
 		node.data[:reprocessing_value] = node.data[:recyclable_materials].
 			reduce(0) { |memo, (material, quantity)|
-				memo + @market_data.sell_price(material.typeID) * quantity * node.runs
+				memo + @market_data.sell_price(material) * quantity * node.runs
 			}
 
 		# Profit

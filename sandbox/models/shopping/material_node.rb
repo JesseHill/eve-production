@@ -15,7 +15,7 @@ class MaterialNode < ShoppingNode
 	end
 
 	def cost_per_unit
-		@pricing.buy_price(@item.typeID)		
+		@pricing.buy_price(@item)		
 	end
 
 	def compute_cost

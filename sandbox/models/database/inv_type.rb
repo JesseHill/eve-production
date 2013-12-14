@@ -1,3 +1,4 @@
+require_relative 'dgm_type_attributes'
 require_relative 'inv_blueprint_type'
 require_relative 'inv_type_material'
 require_relative 'inv_group'
@@ -17,6 +18,7 @@ class InvType < ActiveRecord::Base
 	belongs_to :inv_market_group, :foreign_key => 'marketGroupID'
 	has_many :inv_type_materials, :foreign_key => 'typeID'
 	has_many :ram_type_requirements, through: :inv_blueprint_type
+	has_many :dgm_type_attributes, :foreign_key => 'typeID'
 
 	@@packaged_volumes = {
 		shuttles: 500,
@@ -42,7 +44,7 @@ class InvType < ActiveRecord::Base
 
 	def ram_type_requirements_for_invention
 		return [] unless inv_blueprint_type
-		inv_blueprint_type.ram_type_requirements_for_invention
+		base_item.inv_blueprint_type.ram_type_requirements_for_invention
 	end	
 
 	def is_skill?
@@ -52,13 +54,35 @@ class InvType < ActiveRecord::Base
 	def is_ship?
 		inv_group.is_ship?
 	end
+	
+	def is_techI?
+		!inv_meta_group || inv_meta_group.is_techI?
+	end
 
 	def is_techII?
 		inv_meta_group && inv_meta_group.is_techII?
 	end
 
-	def in_market_group?(group)
+	def in_market_group?(*group)
 		inv_market_group.included_in?(group)
 	end	
+
+	def meta_level
+		DgmTypeAttributes.find_by(typeID: typeID, attributeID: 633).valueFloat
+	end
+
+	def base_item
+		return self if is_techI?
+
+		# Not sure how to get the base item associated with a tech II item. 
+		# Maybe this is the only recyclable ram requirement?
+		# Throwing an exception to fail early if this is not true.
+		recyclable_items = ram_type_requirements_for_manufacturing.select { |r| r.recycle }
+		raise 'Unsupported type!' if recyclable_items.size > 1
+
+		ram_type_requirements_for_manufacturing
+			.detect { |r| r.recycle }
+			.required_type
+	end
 
 end

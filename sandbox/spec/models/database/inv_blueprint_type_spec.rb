@@ -21,9 +21,23 @@ describe InvType do
 		blueprint.in_market_group?(:some_symbol).should be_false		
 	end
 
+	it 'should answer manufacturing requirements correctly' do
+		blueprint = InvType.find_by_typeName('Crow').inv_blueprint_type
+		reqs = blueprint.ram_type_requirements_for_manufacturing
+		reqs.length.should eq(6)
+
+		materials = reqs.
+			reject { |r| r.required_type.is_skill? }.
+			each_with_object({}) { |r, h|
+				h[r.required_type] = r.quantity
+			}
+
+		materials[InvType.find_by_typeName('Condor')].should eq(1)
+		materials[InvType.find_by_typeName('R.A.M.- Starship Tech')].should eq(1)
+	end	
+
 	it 'should answer invention requirements correctly' do
 		blueprint = InvType.find_by_typeName('Condor').inv_blueprint_type
-
 		reqs = blueprint.ram_type_requirements_for_invention
 		reqs.length.should eq(3)
 
@@ -36,6 +50,4 @@ describe InvType do
 		datacores[InvType.find_by_typeName('Datacore - Caldari Starship Engineering')].should eq(2)
 		datacores[InvType.find_by_typeName('Datacore - Mechanical Engineering')].should eq(2)
 	end
-
-
 end

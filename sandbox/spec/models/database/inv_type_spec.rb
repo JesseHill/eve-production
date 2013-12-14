@@ -64,4 +64,35 @@ describe InvType do
 		requirements = type.ram_type_requirements_for_manufacturing
 		requirements.length.should eq(6)
 	end
+
+	it 'should answer the correct list of invention ramTypeRequirements for a tech II type id' do
+		type = InvType.find_by(typeName: 'Helios')
+		requirements = type.ram_type_requirements_for_invention
+		requirements.length.should eq(3)
+		materials = requirements.each_with_object({}) {|r,h| h[r.required_type] = r.quantity}
+		materials[InvType.find_by_typeName('Datacore - Gallentean Starship Engineering')].should eq(2)
+		materials[InvType.find_by_typeName('Datacore - Mechanical Engineering')].should eq(2)
+		materials[InvType.find_by_typeName('Incognito Ship Data Interface')].should eq(1)
+	end	
+
+	it 'should answer whether the item is in a market group' do
+		type = InvType.find_by_typeName('Crow')
+		type.in_market_group?(:frigates).should be_true		
+		type.in_market_group?(:cruisers, :frigates).should be_true		
+		type.in_market_group?(:cruisers, :industrials).should be_false		
+	end
+
+	it 'should answer the correct meta-level' do
+		InvType.find_by_typeName('1MN Microwarpdrive I').meta_level.should eq(0)
+		InvType.find_by_typeName('Upgraded 1MN Microwarpdrive I').meta_level.should eq(1)
+		InvType.find_by_typeName('Limited 1MN Microwarpdrive I').meta_level.should eq(2)
+		InvType.find_by_typeName('Experimental 10MN Microwarpdrive I').meta_level.should eq(3)
+	end	
+
+	it 'should answer the correct base item' do
+		condor = InvType.find_by_typeName('Condor')
+
+		condor.base_item.should eq(condor)
+		InvType.find_by_typeName('Crow').base_item.should eq(condor)
+	end		
 end

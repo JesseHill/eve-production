@@ -6,95 +6,52 @@ require_relative '../models/build/job'
 require_relative '../models/build/waste_calculator'
 require_relative '../models/build/materials_calculator'
 require_relative '../models/build/pricing_calculator'
+require_relative '../models/build/decryptor_repository'
+require_relative '../models/build/invention_strategy'
+require_relative '../models/build/invention_probability_calculator'
+require_relative '../models/build/invention_cost_calculator'
 require_relative '../models/pricing/default_pricing_model'
 require_relative '../presentation/formatting'
 
-class MaterialLevelCalculator
-	def initialize(modifier)
-		@modifier = modifier
+class DecryptorStrategy
+	def initialize(decryptor)
+		@decryptor = decryptor
 	end
 
-	def material_level(blueprint)
-		-4 + @modifier
+	def decryptor(item)
+		@decryptor
 	end
+end
+
+class TechIStrategy
+
+	def techI_item(item)
+		nil
+	end
+
+	def techI_item_meta_level(item)
+		0
+	end	
+end
+
+class MaterialLevelCalculator
+
+	def initialize(modifier)
+		@material_level = -4 + modifier
+	end
+
+	def material_level(item)
+		@material_level
+	end
+
 end
 
 class DecryptorReport
 
-	@@race_map = {
-		amarr: "Occult",
-		caldari: "Esoteric",
-		gallente: "Incognito",
-		minmattar: "Cryptic"
-	}
-
-	@@decyrptor_types = [ 
-		{
-			name: "# Augmentation",
-			probability_multiplier: 0.6,
-			max_run_modifier: 9,
-			me_modifier: -2,
-			pe_modifier: 1
-		},
-		{
-			name: "Optimized # Augmentation",
-			probability_multiplier: 0.9,
-			max_run_modifier: 7,
-			me_modifier: 2,
-			pe_modifier: 0
-		},
-		{
-			name: "# Symmetry",
-			probability_multiplier: 1,
-			max_run_modifier: 2,
-			me_modifier: 1,
-			pe_modifier: 4
-		},
-		{
-			name: "# Process",
-			probability_multiplier: 1.1,
-			max_run_modifier: 0,
-			me_modifier: 3,
-			pe_modifier: 3
-		},
-		{
-			name: "# Accelerant",
-			probability_multiplier: 1.2,
-			max_run_modifier: 1,
-			me_modifier: 2,
-			pe_modifier: 5
-		},
-		{
-			name: "# Parity",
-			probability_multiplier: 1.5,
-			max_run_modifier: 3,
-			me_modifier: 1,
-			pe_modifier: -1
-		},
-		{
-			name: "# Attainment",
-			probability_multiplier: 1.8,
-			max_run_modifier: 4,
-			me_modifier: -1,
-			pe_modifier: 2
-		},
-		{
-			name: "Optimized # Attainment",
-			probability_multiplier: 1.9,
-			max_run_modifier: 2,
-			me_modifier: 1,
-			pe_modifier: -1
-		},
-	]
-
 	def initialize
-		@pricing = DefaultPricingModel.new().pricing
+		@pricing = DefaultPricingModel.new.pricing
 		@pricing_calculator = PricingCalculator.new(@pricing)
-
-	end
-
-	def decryptor_name(item, slug)
-		slug.sub('#', @@race_map[item.inv_market_group.marketGroupName.downcase.to_sym])
+		@decryptor_repository = DecryptorRepository.new
 	end
 
 	def run(typeName)
@@ -104,17 +61,65 @@ class DecryptorReport
 			exit
 		end
 
-		@@decyrptor_types.each { |d|
-			puts decryptor_name(item, d[:name])
-			material_level_calculator = MaterialLevelCalculator.new(d[:me_modifier])
+		job = Job.new(item, 1)
+
+		base_material_level_calculator = MaterialLevelCalculator.new(0)
+		base_waste_calculator = WasteCalculator.new(5, base_material_level_calculator)
+		base_materials_calculator = MaterialsCalculator.new(base_waste_calculator)
+		base_data = job
+			.accept(base_materials_calculator)
+			.accept(@pricing_calculator)
+			.data
+
+		data = @decryptor_repository.types.map do |type|
+			decryptor = @decryptor_repository.find(item, type)
+
+			decryptor_strategy = DecryptorStrategy.new(decryptor)
+			invention_strategy = InventionStrategy.new(decryptor_strategy, TechIStrategy.new)
+			invention_calculator = InventionProbabilityCalculator.new(invention_strategy, @decryptor_repository)
+			invention_cost = InventionCostCalculator.new(@pricing, invention_calculator, invention_strategy)
+
+			material_level_calculator = MaterialLevelCalculator.new(@decryptor_repository.me_modifier(decryptor))
 			waste_calculator = WasteCalculator.new(5, material_level_calculator)
 			materials_calculator = MaterialsCalculator.new(waste_calculator)
-			job = Job.new(item, 1 + d[:max_run_modifier]).
-				accept(materials_calculator).
-				accept(@pricing_calculator)
-			puts "\tProfit: #{Formatting.format_isk(job.data[:profit])}"
-			puts ""
-		}
+			
+			build_data = job
+				.accept(materials_calculator)
+				.accept(@pricing_calculator)
+				.data
+
+			{
+				name: decryptor.typeName,
+				build_cost: build_data[:material_cost],
+				build_profit: build_data[:profit],
+				invention_cost: invention_cost.cost_per_run(item),
+				invention_profit: build_data[:profit] - base_data[:profit],
+				net_invention_profit: build_data[:profit] - base_data[:profit] - invention_cost.cost_per_run(item)
+			}
+		end
+
+		puts 
+		puts "-" * 50
+		puts item.typeName
+		puts "-" * 50
+		puts
+		puts "Sell price: #{Formatting.format_isk(base_data[:value])}"
+		puts "Base cost: #{Formatting.format_isk(base_data[:material_cost])}"
+		puts "Profit with no decryptors: #{Formatting.format_isk(base_data[:profit])}"
+		puts
+
+		data
+			.sort_by { |d| d[:net_invention_profit] }
+			.each do |d|
+				puts d[:name]
+				puts "\tBuild cost: #{Formatting.format_isk(d[:build_cost])}"
+				puts "\tBuild value: #{Formatting.format_isk(base_data[:value])}"
+				puts "\tBuild profit: #{Formatting.format_isk(d[:build_profit])}"
+				puts "\tInvention cost per run: #{Formatting.format_isk(d[:invention_cost])}"
+				puts "\tAdded profit per run: #{Formatting.format_isk(d[:invention_profit])}"
+				puts "\tNet profit per run: #{Formatting.format_isk(d[:net_invention_profit])}"
+				puts ""	
+			end
 	end
 end
 

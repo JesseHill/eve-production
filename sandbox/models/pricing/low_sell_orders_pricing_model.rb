@@ -1,5 +1,6 @@
 require 'nokogiri'
 require_relative '../database/map_solar_systems'
+require_relative '../database/inv_type'
 require_relative 'quick_look_data'
 
 class LowSellOrdersPricingModel
@@ -17,6 +18,7 @@ class LowSellOrdersPricingModel
 	end
 
 	def price(id)
+		id = id.typeID if id.is_a? InvType
 		return @prices[id] if @prices.has_key?(id)
 		marketData = Nokogiri::XML(@data_source.data(:typeid => id))
 		prices = marketData.css("sell_orders order price").
