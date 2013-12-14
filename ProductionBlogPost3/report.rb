@@ -22,11 +22,11 @@ ActiveRecord::Base.establish_connection(dbconfig)
 
 # Create our pricing data.
 markets = CompositePricingModel.new(
-	['Jita', 'Amarr'].map { |system|
+	['Jita', 'Amarr'].map do |system|
 		PersistentPricingModel.new(
 			LowSellOrdersPricingModel.new(
 				MapSolarSystems.find_by_solarSystemName(system)))
-	}
+	end
 )
 pricing_calculator = PricingCalculator.new(markets)
 
@@ -42,9 +42,9 @@ jobs = [
 ].map { |name, count| Job.new(name, count) }
 
 # Run our visitors to generate our build data.
-build = Build.new("Initial Build", 1, jobs).
-	accept(materials_calculator).
-	accept(pricing_calculator)
+build = Build.new("Initial Build", 1, jobs)
+	.accept(materials_calculator)
+	.accept(pricing_calculator)
 
 # Print out what we've found.
 ConsoleSerializer.new(build).write()
