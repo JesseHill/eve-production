@@ -2,6 +2,8 @@ require_relative '../database/inv_type'
 require_relative 'node'
 
 class Job < Node
+	
+	attr_reader :item
 
 	def initialize(key, runs)
 		@item = key.is_a?(String) ? InvType.find_by_typeName(key) : InvType.find_by_typeID(key)

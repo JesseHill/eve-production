@@ -13,6 +13,7 @@ class PricingCalculator
 		node.data[:material_cost] = node.data[:material_costs].values.reduce(0) { |memo, costs|
 			memo += costs[:total]
 		}
+		node.data[:cost] = node.data[:material_cost] + (node.data[:invention_cost] || 0)
 
 		# Value	
 		if node.is_buildable?
@@ -23,9 +24,12 @@ class PricingCalculator
 		end
 
 		# Profit
-		node.data[:profit] = node.data[:value] - node.data[:material_cost]
-		node.data[:profit_margin] = node.data[:material_cost] > 0 ?
-			node.data[:profit] / node.data[:material_cost] :
+		node.data[:profit] = node.data[:value] - node.data[:cost]
+		if node.is_buildable?
+			node.data[:profit_per_unit] = node.data[:profit] / node.runs / node.portionSize
+		end
+		node.data[:profit_margin] = node.data[:cost] > 0 ?
+			node.data[:profit] / node.data[:cost] :
 			1
 	end	
 

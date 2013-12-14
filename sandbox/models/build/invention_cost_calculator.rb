@@ -24,4 +24,14 @@ class InventionCostCalculator
 	def cost_per_run(item)
 		cost(item) / @calculator.chance(item) / @calculator.runs(item)
 	end
+
+	def visit(node)
+		if node.is_buildable?
+			node.data[:invention_cost] = node.runs * cost_per_run(node.item)
+		else
+			node.data[:invention_cost] = node.children.reduce(0) do |memo, node| 
+				memo + node.data[:invention_cost]
+			end
+		end
+	end		
 end

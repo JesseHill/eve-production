@@ -1,6 +1,11 @@
 require_relative '../models/build/waste_calculator'
 require_relative '../models/build/materials_calculator'
 require_relative '../models/build/blueprint_repository'
+require_relative '../models/build/decryptor_repository'
+require_relative '../models/build/decryptor_strategy'
+require_relative '../models/build/invention_strategy'
+require_relative '../models/build/invention_probability_calculator'
+require_relative '../models/build/invention_cost_calculator'
 require_relative '../models/build/pricing_calculator'
 require_relative '../models/pricing/default_pricing_model'
 require_relative '../models/shopping/shopping_list'
@@ -12,21 +17,26 @@ class ManufacturingReport
 		@pricing = DefaultPricingModel.new().pricing
 		@pricing_calculator = PricingCalculator.new(@pricing)
 
-
 		# Create the objects needed to compute material costs.
 		blueprint_repository = BlueprintRepository.new()
 		waste_calculator = WasteCalculator.new(5, blueprint_repository)
 		@materials_calculator = MaterialsCalculator.new(waste_calculator)
+
+		decryptor_repository = DecryptorRepository.new
+		invention_strategy = InventionStrategy.new(DecryptorStrategy.new(decryptor_repository))
+		probability_calculator = InventionProbabilityCalculator.new(invention_strategy, decryptor_repository)
+		@invention_calculator = InventionCostCalculator.new(@pricing, probability_calculator, invention_strategy)
 
 		# Create our presentation object
 		@writer = ConsoleSerializer.new()
 	end
 
 	def run(build, options = {})
-		build = build.
-			accept(@materials_calculator).
-			accept(@pricing_calculator).
-			sort_by { |n| n.data[:profit_margin] }
+		build = build
+			.accept(@materials_calculator)
+			.accept(@invention_calculator)
+			.accept(@pricing_calculator)
+			.sort_by { |n| n.data[:profit_margin] }
 
 		@writer.write_build(build)
 

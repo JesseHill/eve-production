@@ -6,7 +6,7 @@ class DecryptorStrategy
 
 	def decryptor(item)
 		return @repo.find(item, :symmetry) if item.in_market_group?(:frigates)
-		return @repo.find(item, :process) if item.in_market_group?(:cruisers)
+		return @repo.find(item, :process) if item.in_market_group?(:ships)
 		nil
 	end
 end
