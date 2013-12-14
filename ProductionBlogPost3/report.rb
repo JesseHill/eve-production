@@ -1,4 +1,5 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+
 require 'nokogiri'
 require 'open-uri'
 require 'active_record'
@@ -20,9 +21,13 @@ dbconfig = YAML::load(File.open('./config/database.yml'))
 ActiveRecord::Base.establish_connection(dbconfig)
 
 # Create our pricing data.
-jita = PersistentPricingModel.new(LowSellOrdersPricingModel.new(MapSolarSystems.find_by_solarSystemName('Jita')))
-amarr = PersistentPricingModel.new(LowSellOrdersPricingModel.new(MapSolarSystems.find_by_solarSystemName('Amarr')))
-markets = CompositePricingModel.new([jita, amarr])
+markets = CompositePricingModel.new(
+	['Jita', 'Amarr'].map { |system|
+		PersistentPricingModel.new(
+			LowSellOrdersPricingModel.new(
+				MapSolarSystems.find_by_solarSystemName(system)))
+	}
+)
 pricing_calculator = PricingCalculator.new(markets)
 
 # Create the object needed to compute material costs.
