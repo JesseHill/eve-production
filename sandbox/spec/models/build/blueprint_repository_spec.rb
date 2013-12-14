@@ -8,7 +8,7 @@ describe BlueprintRepository do
 
 	it 'should answer the correct material level for some frigates' do
 	 	@repo.material_level('Merlin').should eq(20)	
-	 	@repo.material_level('Helios').should eq(-4)	
+	 	@repo.material_level('Helios').should eq(-3)	
 	end
 
 	it 'should answer the correct material level for some cruisers' do

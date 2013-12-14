@@ -40,6 +40,11 @@ class InvType < ActiveRecord::Base
 		inv_blueprint_type.ram_type_requirements_for_manufacturing
 	end
 
+	def ram_type_requirements_for_invention
+		return [] unless inv_blueprint_type
+		inv_blueprint_type.ram_type_requirements_for_invention
+	end	
+
 	def is_skill?
 		inv_group.is_skill?
 	end

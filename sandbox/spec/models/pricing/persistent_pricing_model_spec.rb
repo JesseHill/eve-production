@@ -19,6 +19,10 @@ describe PersistentPricingModel do
 			with(34).
 			returns(2).
 			once()
+		model.
+			expects(:name).
+			returns("pricingModel").
+			at_least_once()
 
 		model = PersistentPricingModel.new(model, "./spec/data/test")
 		model.buy_price(34).should eq(1)
@@ -37,6 +41,10 @@ describe PersistentPricingModel do
 			with(34).
 			returns(2).
 			twice()
+		model.
+			expects(:name).
+			returns("pricingModel").
+			at_least_once()
 
 		model = PersistentPricingModel.new(model, "./spec/data/test", 1)
 		model.buy_price(34).should eq(1)

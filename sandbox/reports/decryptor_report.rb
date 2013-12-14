@@ -2,10 +2,22 @@
 
 require_relative '../config/active_record_config'
 require_relative '../models/database/inv_type'
+require_relative '../models/build/job'
 require_relative '../models/build/waste_calculator'
 require_relative '../models/build/materials_calculator'
 require_relative '../models/build/pricing_calculator'
 require_relative '../models/pricing/default_pricing_model'
+require_relative '../presentation/formatting'
+
+class MaterialLevelCalculator
+	def initialize(modifier)
+		@modifier = modifier
+	end
+
+	def material_level(blueprint)
+		-4 + @modifier
+	end
+end
 
 class DecryptorReport
 
@@ -79,14 +91,10 @@ class DecryptorReport
 		@pricing = DefaultPricingModel.new().pricing
 		@pricing_calculator = PricingCalculator.new(@pricing)
 
-		# Create the objects needed to compute material costs.
-		# blueprint_repository = BlueprintRepository.new()
-		# waste_calculator = WasteCalculator.new(5, blueprint_repository)
-		# @materials_calculator = MaterialsCalculator.new(waste_calculator)
 	end
 
-	def decryptor_name(item)
-		@@race_map[item.inv_market_group.marketGroupName.downcase.to_sym]
+	def decryptor_name(item, slug)
+		slug.sub('#', @@race_map[item.inv_market_group.marketGroupName.downcase.to_sym])
 	end
 
 	def run(typeName)
@@ -95,9 +103,17 @@ class DecryptorReport
 			puts "The decryptor report is only set up for ships. Sorry."
 			exit
 		end
-		racial_name = decryptor_name(item)
+
 		@@decyrptor_types.each { |d|
-			puts d[:name].sub('#', racial_name)
+			puts decryptor_name(item, d[:name])
+			material_level_calculator = MaterialLevelCalculator.new(d[:me_modifier])
+			waste_calculator = WasteCalculator.new(5, material_level_calculator)
+			materials_calculator = MaterialsCalculator.new(waste_calculator)
+			job = Job.new(item, 1 + d[:max_run_modifier]).
+				accept(materials_calculator).
+				accept(@pricing_calculator)
+			puts "\tProfit: #{Formatting.format_isk(job.data[:profit])}"
+			puts ""
 		}
 	end
 end

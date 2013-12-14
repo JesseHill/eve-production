@@ -21,4 +21,21 @@ describe InvType do
 		blueprint.in_market_group?(:some_symbol).should be_false		
 	end
 
+	it 'should answer invention requirements correctly' do
+		blueprint = InvType.find_by_typeName('Condor').inv_blueprint_type
+
+		reqs = blueprint.ram_type_requirements_for_invention
+		reqs.length.should eq(3)
+
+		datacores = reqs.
+			select { |r| r.required_type.inv_group.groupName == 'Datacores' }.
+			each_with_object({}) { |r, h|
+				h[r.required_type] = r.quantity
+			}
+
+		datacores[InvType.find_by_typeName('Datacore - Caldari Starship Engineering')].should eq(2)
+		datacores[InvType.find_by_typeName('Datacore - Mechanical Engineering')].should eq(2)
+	end
+
+
 end

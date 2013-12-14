@@ -1,33 +1,6 @@
-#!/usr/bin/ruby
-
-require 'nokogiri'
-require 'open-uri'
-require 'money'
-require_relative '../models/build/build'
+require_relative 'formatting'
 
 class ConsoleSerializer
-
-	def format_isk(value)
-		Money.new(value * 100).format(
-			:symbol => "ISK", 
-			:symbol_position => :after,
-			:sign_before_symbol => true
-			# :sign_before_symbol => false
-		)
-	end
-
-	def format_volume(value)
-		Money.new(value.ceil * 100).format(
-			:symbol => "m3", 
-			:symbol_position => :after, 
-			:no_cents => true)
-	end
-
-	def format_quantity(value)
-		Money.new(value.ceil * 100).format(
-			:symbol => "", 
-			:no_cents => true)
-	end	
 
 	def write_banner(text, double_wide = false)
 		width = double_wide ? 100 : 50;
@@ -46,19 +19,19 @@ class ConsoleSerializer
 			sort_by { |node| node.data[:profit_margin] }.
 			each_with_depth { |node, depth| 
 				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
-				write_line "Cost: #{format_isk(node.data[:material_cost])}"
-				write_line "Value: #{format_isk(node.data[:value])}"
-				write_line "Value Per Unit: #{format_isk(node.data[:value_per_unit])}" if node.is_buildable?
-				write_line "Profit: #{format_isk(node.data[:profit])}"
+				write_line "Cost: #{Formatting.format_isk(node.data[:material_cost])}"
+				write_line "Value: #{Formatting.format_isk(node.data[:value])}"
+				write_line "Value Per Unit: #{Formatting.format_isk(node.data[:value_per_unit])}" if node.is_buildable?
+				write_line "Profit: #{Formatting.format_isk(node.data[:profit])}"
 				write_line "Profit Margin: #{(node.data[:profit_margin] * 100).round(2)} %"
 
                 if write_materials
                     write_line "Materials:"
                     costs = node.data[:material_costs]
                     node.data[:materials].each { |m, q|
-                        per_unit = format_isk(costs[m][:per_unit])
-                        total = format_isk(costs[m][:total] * 100)
-                        write_line("#{format_quantity(q)} #{m.typeName} - per unit: #{per_unit} - total: #{total}", 1)
+                        per_unit = Formatting.format_isk(costs[m][:per_unit])
+                        total = Formatting.format_isk(costs[m][:total] * 100)
+                        write_line("#{Formatting.format_quantity(q)} #{m.typeName} - per unit: #{per_unit} - total: #{total}", 1)
                     }
                 end
             }
@@ -69,9 +42,9 @@ class ConsoleSerializer
 		list.each_with_depth { |node, depth|
 			if node.has_children?
 				write_line
-				write_line("#{node.name} - Volume: #{format_volume(node.volume)} Cost: #{format_isk(node.cost)}", depth)
+				write_line("#{node.name} - Volume: #{Formatting.format_volume(node.volume)} Cost: #{Formatting.format_isk(node.cost)}", depth)
 			else
-				write_line("#{format_quantity(node.quantity)} - #{node.name} - #{format_isk(node.cost_per_unit)} - #{format_isk(node.cost)}", depth)
+				write_line("#{Formatting.format_quantity(node.quantity)} - #{node.name} - #{Formatting.format_isk(node.cost_per_unit)} - #{Formatting.format_isk(node.cost)}", depth)
 			end	
 		}			
 	end
@@ -81,9 +54,9 @@ class ConsoleSerializer
 			sort_by { |node| node.data[:reprocessing_profit_margin] }.
 			each_with_depth { |node, depth| 
 				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
-				write_line "Cost: #{format_isk(node.data[:reprocessing_cost])}"
-				write_line "Value: #{format_isk(node.data[:reprocessing_value])}"
-				write_line "Profit: #{format_isk(node.data[:reprocessing_profit])}"
+				write_line "Cost: #{Formatting.format_isk(node.data[:reprocessing_cost])}"
+				write_line "Value: #{Formatting.format_isk(node.data[:reprocessing_value])}"
+				write_line "Profit: #{Formatting.format_isk(node.data[:reprocessing_profit])}"
 				write_line "Profit Margin: #{(node.data[:reprocessing_profit_margin] * 100).round(2)} %"
             }
     end

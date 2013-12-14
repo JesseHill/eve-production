@@ -8,9 +8,14 @@ class InvBlueprintType < ActiveRecord::Base
 	has_many :ram_type_requirements, :class_name => 'RamTypeRequirement', :foreign_key => 'typeID'
 
 	def ram_type_requirements_for_manufacturing
-		manufacturing = RamActivity.find_by(activityName: "Manufacturing")
+		manufacturing = RamActivity.find_by_activityName("Manufacturing")
 		ram_type_requirements.select {|r| r.ram_activity == manufacturing}
 	end
+
+	def ram_type_requirements_for_invention
+		invention = RamActivity.find_by_activityName("Invention")
+		ram_type_requirements.select {|r| r.ram_activity == invention}
+	end	
 
 	def in_market_group?(group)
 		inv_type.in_market_group?(group)
