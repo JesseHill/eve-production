@@ -85,16 +85,18 @@ class DecryptorReport
 			
 			build_data = job
 				.accept(materials_calculator)
+				.accept(invention_cost)
 				.accept(@pricing_calculator)
 				.data
 
 			{
 				name: decryptor.typeName,
+				materials: build_data[:invention_materials],
 				build_cost: build_data[:material_cost],
 				build_profit: build_data[:profit],
-				invention_cost: invention_cost.cost_per_run(item),
+				invention_cost: build_data[:invention_cost],
 				invention_profit: build_data[:profit] - base_data[:profit],
-				net_invention_profit: build_data[:profit] - base_data[:profit] - invention_cost.cost_per_run(item)
+				net_invention_profit: build_data[:profit] - base_data[:profit] - build_data[:invention_cost],
 			}
 		end
 
@@ -118,6 +120,10 @@ class DecryptorReport
 				puts "\tInvention cost per run: #{Formatting.format_isk(d[:invention_cost])}"
 				puts "\tAdded profit per run: #{Formatting.format_isk(d[:invention_profit])}"
 				puts "\tNet profit per run: #{Formatting.format_isk(d[:net_invention_profit])}"
+				puts "\tMaterials:"
+				d[:materials].each do |material, quantity|
+					puts "\t\t#{quantity} #{material.typeName} at #{Formatting.format_isk(@pricing.buy_price(material))}"
+				end
 				puts ""	
 			end
 	end
