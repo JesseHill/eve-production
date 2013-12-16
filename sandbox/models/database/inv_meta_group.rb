@@ -22,6 +22,14 @@ class InvMetaGroup < ActiveRecord::Base
 
 	has_many :inv_types, through: :inv_meta_type
 
+	def is_faction?
+		metaGroupName == 'Faction'
+	end
+
+	def is_officer?
+		metaGroupName == 'Officer'
+	end
+
 	def is_techI?
 		metaGroupName == 'Tech I'
 	end

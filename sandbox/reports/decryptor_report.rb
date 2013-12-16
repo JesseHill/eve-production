@@ -95,8 +95,7 @@ class DecryptorReport
 				build_cost: build_data[:material_cost],
 				build_profit: build_data[:profit],
 				invention_cost: build_data[:invention_cost],
-				invention_profit: build_data[:profit] - base_data[:profit],
-				net_invention_profit: build_data[:profit] - base_data[:profit] - build_data[:invention_cost],
+				invention_profit: build_data[:profit] - base_data[:profit] - build_data[:invention_cost],
 			}
 		end
 
@@ -111,15 +110,14 @@ class DecryptorReport
 		puts
 
 		data
-			.sort_by { |d| d[:net_invention_profit] }
+			.sort_by { |d| d[:invention_profit] }
 			.each do |d|
 				puts d[:name]
 				puts "\tBuild cost: #{Formatting.format_isk(d[:build_cost])}"
 				puts "\tBuild value: #{Formatting.format_isk(base_data[:value])}"
 				puts "\tBuild profit: #{Formatting.format_isk(d[:build_profit])}"
 				puts "\tInvention cost per run: #{Formatting.format_isk(d[:invention_cost])}"
-				puts "\tAdded profit per run: #{Formatting.format_isk(d[:invention_profit])}"
-				puts "\tNet profit per run: #{Formatting.format_isk(d[:net_invention_profit])}"
+				puts "\tInvention profit per run: #{Formatting.format_isk(d[:invention_profit])}"
 				puts "\tMaterials:"
 				d[:materials].each do |material, quantity|
 					puts "\t\t#{quantity} #{material.typeName} at #{Formatting.format_isk(@pricing.buy_price(material))}"

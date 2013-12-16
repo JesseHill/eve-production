@@ -18,6 +18,8 @@ class BlueprintRepository
 	private
 
 	def default_material_level(blueprint)
+		return 0 if blueprint.inv_type.inv_meta_group.is_faction?
+		return 0 if blueprint.inv_type.inv_meta_group.is_officer?
 		if blueprint.in_market_group?(:ships)
 			return blueprint.is_techII? ? -3 : 20 if blueprint.in_market_group?(:frigates)
 			return blueprint.is_techII? ? -1 : 50 if blueprint.in_market_group?(:cruisers)
