@@ -22,7 +22,7 @@ class QuickLookData
 	end
 
 	def data(args)
-		puts "Loading #{uri(args)}"
+		# puts "Loading #{uri(args)}"
 		open(uri(args))
 	end
 end

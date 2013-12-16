@@ -37,7 +37,7 @@ class ConsoleSerializer
                     costs = node.data[:material_costs]
                     node.data[:materials].each { |m, q|
                         per_unit = Formatting.format_isk(costs[m][:per_unit])
-                        total = Formatting.format_isk(costs[m][:total] * 100)
+                        total = Formatting.format_isk(costs[m][:total])
                         write_line("#{Formatting.format_quantity(q)} #{m.typeName} - per unit: #{per_unit} - total: #{total}", 1)
                     }
                 end
