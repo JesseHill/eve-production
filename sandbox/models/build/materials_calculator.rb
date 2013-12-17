@@ -8,7 +8,7 @@ class MaterialsCalculator
 
 	def visit(node)
 		if node.is_buildable?
-			node.data[:materials] = required_materials(node.blueprint, node.runs)
+			node.data[:materials] = required_materials(node.blueprint, node.runs, node.options)
 		else
 			node.data[:materials] = node.children.each_with_object({}) { |n, h|
 				h.merge!(n.data[:materials]) { |k, l, r| l + r }
@@ -16,7 +16,7 @@ class MaterialsCalculator
 		end
 	end	
 
-	def required_materials(blueprint, runs)
+	def required_materials(blueprint, runs, options = {})
 		inv_type = blueprint.inv_type
 		ram_requirements = inv_type.
 			ram_type_requirements_for_manufacturing.
@@ -27,7 +27,7 @@ class MaterialsCalculator
 			merge(recyleable_requirements(ram_requirements)) { |k, l, r| l - r }. # remove recycleable materials
 			select { |k, v| v > 0 }. # remove empty elements
 			map { |type, quantity| # Adjust for waste and number of runs
-				[type, @waste_calculator.calculate_required_quantity(inv_type, quantity) * runs]
+				[type, @waste_calculator.calculate_required_quantity(inv_type, quantity, options) * runs]
 			}]
 
 		# Now add in ram requirements (extra materials) which are not skills

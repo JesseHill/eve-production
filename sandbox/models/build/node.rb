@@ -1,11 +1,12 @@
 class Node
 
-	attr_accessor :name, :runs, :children, :data
+	attr_accessor :name, :runs, :children, :data, :options
 
-	def initialize(name, runs = 1, children = [])
+	def initialize(name, runs = 1, children = [], options = {})
 		@name = name
 		@runs = Integer(runs)
 		@children = children
+		@options = options
 		@data = {}
 	end
 

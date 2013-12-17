@@ -5,11 +5,11 @@ class Job < Node
 	
 	attr_reader :item
 
-	def initialize(key, runs)
+	def initialize(key, runs, options = {})
 		@item = key.is_a?(String) ? InvType.find_by_typeName(key) : InvType.find_by_typeID(key)
 		raise "Failed to find item: #{key}" if @item.nil?
 		
-		super(@item.typeName, runs)
+		super(@item.typeName, runs, [], options)
 	end
 
 	def portionSize
