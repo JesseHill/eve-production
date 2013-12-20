@@ -16,7 +16,7 @@ class ConsoleSerializer
 
 	def write_build(build, write_materials = false)
 		build.
-			sort_by { |node| node.data[:profit_margin] }.
+			sort_by { |node| node.data[:profit_per_hour] }.
 			each_with_depth { |node, depth| 
 				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
 				if node.data[:invention_cost] > 0

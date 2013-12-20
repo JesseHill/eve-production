@@ -18,18 +18,18 @@ class DecryptorStrategy
 		@decryptor = decryptor
 	end
 
-	def decryptor(item)
+	def decryptor(item, options = {})
 		@decryptor
 	end
 end
 
 class TechIStrategy
 
-	def techI_item(item)
+	def techI_item(item, options = {})
 		nil
 	end
 
-	def techI_item_meta_level(item)
+	def techI_item_meta_level(item, options = {})
 		0
 	end	
 end
@@ -95,7 +95,7 @@ class DecryptorReport
 				build_cost: build_data[:material_cost],
 				build_profit: build_data[:profit],
 				invention_cost: build_data[:invention_cost],
-				invention_profit: build_data[:profit] - base_data[:profit] - build_data[:invention_cost],
+				invention_profit: build_data[:profit] - base_data[:profit],
 			}
 		end
 

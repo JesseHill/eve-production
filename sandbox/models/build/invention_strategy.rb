@@ -11,19 +11,19 @@ class InventionStrategy
 		@data_skill_two = data_skill_two
 	end
 
-	def decryptor(item)
+	def decryptor(item, options = {})
 		return nil unless @decryptor_strategy
-		@decryptor_strategy.decryptor(item)
+		@decryptor_strategy.decryptor(item, options)
 	end
 
-	def techI_item(item)
+	def techI_item(item, options = {})
 		return nil unless @techI_strategy
-		@techI_strategy.techI_item(item)
+		@techI_strategy.techI_item(item, options)
 	end
 
-	def techI_item_meta_level(item)
+	def techI_item_meta_level(item, options = {})
 		return 0 unless @techI_strategy
-		@techI_strategy.techI_item_meta_level(item)
+		@techI_strategy.techI_item_meta_level(item, options)
 	end
 
 end

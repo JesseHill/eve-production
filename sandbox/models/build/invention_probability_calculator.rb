@@ -7,11 +7,11 @@ class InventionProbabilityCalculator
 		@decryptor_repo = decryptor_repo
 	end
 
-	def chance(item)
+	def chance(item, options = {})
 		encryption_skill_multiplier = 0.01 * @strategy.encryption_skill
 		data_skill_multiplier = 0.02 * (@strategy.data_skill_one + @strategy.data_skill_two)
-		techI_multiplier = 5.0 / (5 - @strategy.techI_item_meta_level(item))
-		decryptor_multiplier = @decryptor_repo.probability_multiplier(@strategy.decryptor(item))
+		techI_multiplier = 5.0 / (5 - @strategy.techI_item_meta_level(item, options))
+		decryptor_multiplier = @decryptor_repo.probability_multiplier(@strategy.decryptor(item, options))
 
 		base_chance(item) * 
 			(1 + encryption_skill_multiplier) *
@@ -19,9 +19,9 @@ class InventionProbabilityCalculator
 			decryptor_multiplier
 	end		
 
-	def runs(item)
-		return (1 + @decryptor_repo.max_run_modifier(@strategy.decryptor(item))) if item.in_market_group?(:ships, :rigs)
-		return (10 + @decryptor_repo.max_run_modifier(@strategy.decryptor(item))) if item.in_market_group?(:ship_equipment)
+	def runs(item, options = {})
+		return (1 + @decryptor_repo.max_run_modifier(@strategy.decryptor(item, options))) if item.in_market_group?(:ships, :rigs)
+		return (10 + @decryptor_repo.max_run_modifier(@strategy.decryptor(item, options))) if item.in_market_group?(:ship_equipment)
 		raise "Runs for #{item.typeName} not yet supported."
 	end
 

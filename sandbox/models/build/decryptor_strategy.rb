@@ -4,9 +4,12 @@ class DecryptorStrategy
 		@repo = repo
 	end
 
-	def decryptor(item)
-		return nil if item.in_market_group?(:frigates)
-		# return @repo.find(item, :symmetry) if item.in_market_group?(:frigates)
+	def decryptor(item, options = {})
+		if item.in_market_group?(:frigates)
+			puts "Getting decryptor for #{item.typeName} with me: #{options[:material_level]}"
+			return @repo.find(item, :symmetry) if options[:material_level] == -3
+			return nil
+		end
 		return @repo.find(item, :process) if item.in_market_group?(:ships)
 		nil
 	end
