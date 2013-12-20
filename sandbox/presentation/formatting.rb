@@ -23,6 +23,20 @@ class Formatting
 			:symbol => "", 
 			:no_cents => true)
 	end	
+
+	def self.format_time(value)
+		mm, ss = value.divmod(60)
+		hh, mm = mm.divmod(60)
+		dd, hh = hh.divmod(24)
+
+		if dd > 0
+			"%d days, %d hours, %d minutes and %d seconds" % [dd, hh, mm, ss]
+		elsif hh > 0
+			"%d hours, %d minutes and %d seconds" % [hh, mm, ss]
+		else
+			"%d minutes and %d seconds" % [mm, ss]
+		end
+	end
 end
 
 

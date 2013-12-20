@@ -1,5 +1,7 @@
 require_relative '../models/build/waste_calculator'
 require_relative '../models/build/materials_calculator'
+require_relative '../models/build/production_time_calculator'
+require_relative '../models/build/production_information'
 require_relative '../models/build/blueprint_repository'
 require_relative '../models/build/decryptor_repository'
 require_relative '../models/build/decryptor_strategy'
@@ -27,6 +29,8 @@ class ManufacturingReport
 		probability_calculator = InventionProbabilityCalculator.new(invention_strategy, decryptor_repository)
 		@invention_calculator = InventionCostCalculator.new(@pricing, probability_calculator, invention_strategy)
 
+		@production_time_calculator = ProductionTimeCalculator.new(blueprint_repository, ProductionInformation.new)
+
 		# Create our presentation object
 		@writer = ConsoleSerializer.new()
 	end
@@ -36,6 +40,7 @@ class ManufacturingReport
 			.accept(@materials_calculator)
 			.accept(@invention_calculator)
 			.accept(@pricing_calculator)
+			.accept(@production_time_calculator)
 			.sort_by { |n| n.data[:profit_margin] }
 
 		@writer.write_build(build)

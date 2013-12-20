@@ -2,10 +2,8 @@ require_relative '../database/inv_type'
 
 class BlueprintRepository
 
-	def material_level(blueprint)
-		blueprint = InvBlueprintType.find_by_blueprintTypeID(blueprint) if blueprint.is_a? Numeric
-		blueprint = InvType.find_by_typeName(blueprint).inv_blueprint_type if blueprint.is_a? String
-		raise "Invalid argument" unless blueprint.is_a? InvBlueprintType
+	def material_level(key)
+		blueprint = lookup_item(key)
 
 		# Check some stored list of owned bpos? 
 		# There doesn't seem to be an API that will allow this info to be grabbed dynamically.
@@ -15,7 +13,25 @@ class BlueprintRepository
 		default_material_level(blueprint)
 	end
 
+	def productivity_level(key)
+		blueprint = lookup_item(key)
+
+		# Check some stored list of owned bpos? 
+		# There doesn't seem to be an API that will allow this info to be grabbed dynamically.
+		# We might prefer default values in most cases anyway to do fair comparisons between items.
+
+		# Punt to some default values.
+		default_productivity_level(blueprint)
+	end	
+
 	private
+
+	def lookup_item(key)
+		return InvBlueprintType.find_by_blueprintTypeID(key) if key.is_a? Numeric
+		return InvType.find_by_typeName(key).inv_blueprint_type if key.is_a? String
+		return key if key.is_a? InvBlueprintType
+		raise "Invalid argument"
+	end
 
 	def default_material_level(blueprint)
 		meta_group = blueprint.inv_type.inv_meta_group
@@ -29,4 +45,8 @@ class BlueprintRepository
 
 		return blueprint.is_techII? ? -4 : 100 
 	end
+
+	def default_productivity_level(blueprint)
+		return blueprint.is_techII? ? -4 : 15
+	end	
 end

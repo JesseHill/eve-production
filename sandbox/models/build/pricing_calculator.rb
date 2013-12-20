@@ -14,6 +14,9 @@ class PricingCalculator
 			memo += costs[:total]
 		}
 		node.data[:cost] = node.data[:material_cost] + (node.data[:invention_cost] || 0)
+		if node.is_buildable?
+			node.data[:cost_per_unit] = node.data[:cost] / node.runs
+		end
 
 		# Value	
 		if node.is_buildable?

@@ -26,11 +26,14 @@ class ConsoleSerializer
 				else
 					write_line "Cost: #{Formatting.format_isk(node.data[:cost])}"
 				end
+				write_line "Cost per unit: #{Formatting.format_isk(node.data[:cost_per_unit])}" if node.data[:cost_per_unit]
 				write_line "Value: #{Formatting.format_isk(node.data[:value])}"
 				write_line "Value Per Unit: #{Formatting.format_isk(node.data[:value_per_unit])}" if node.is_buildable?
 				write_line "Profit: #{Formatting.format_isk(node.data[:profit])}"
 				write_line "Profit Per Unit: #{Formatting.format_isk(node.data[:profit_per_unit])}" if node.is_buildable?
 				write_line "Profit Margin: #{(node.data[:profit_margin] * 100).round(2)} %"
+				write_line "Production Time: #{Formatting.format_time(node.data[:production_time])}"
+				write_line "Profit Per Hour: #{Formatting.format_isk(node.data[:profit_per_hour])}"
 
                 if write_materials
                     write_line "Materials:"
