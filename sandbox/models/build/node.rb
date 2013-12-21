@@ -41,4 +41,10 @@ class Node
 		}
 	end
 
+	def select(&block)
+		self.clone.tap { |copy|
+			copy.data = @data.clone
+			copy.children = @children.select(&block)
+		}
+	end
 end

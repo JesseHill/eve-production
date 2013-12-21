@@ -2,7 +2,7 @@ require 'uri/http'
 require 'cgi'
 require 'open-uri'
 
-class QuickLookData
+class ItemHistoryData
 
 	attr_accessor :query_data
 
@@ -12,8 +12,8 @@ class QuickLookData
 
 	def uri(extraQueryArgs = {})
 		args = {}
-		args[:host] = 'api.eve-central.com'
-		args[:path] = '/api/quicklook'
+		args[:host] = 'api.eve-marketdata.com'
+		args[:path] = '/api/item_history2.xml'
 
 		query = @query_data.merge(extraQueryArgs).map {|k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}"}.join("&")
 		args[:query] = query unless query.empty? 
@@ -23,10 +23,6 @@ class QuickLookData
 
 	def data(args)
 		# puts "Loading #{uri(args)}"
-		begin
-			open(uri(args))
-		rescue
-			raise "Error loading #{uri(args)}"
-		end
+		open(uri(args))
 	end
 end

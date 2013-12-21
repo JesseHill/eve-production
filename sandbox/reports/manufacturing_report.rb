@@ -9,7 +9,9 @@ require_relative '../models/build/invention_strategy'
 require_relative '../models/build/invention_probability_calculator'
 require_relative '../models/build/invention_cost_calculator'
 require_relative '../models/build/pricing_calculator'
+require_relative '../models/build/marketable_volume_calculator'
 require_relative '../models/pricing/default_pricing_model'
+require_relative '../models/pricing/default_market_history'
 require_relative '../models/shopping/shopping_list'
 require_relative '../presentation/console_serializer'
 
@@ -18,6 +20,7 @@ class ManufacturingReport
 	def initialize
 		@pricing = DefaultPricingModel.new().pricing
 		@pricing_calculator = PricingCalculator.new(@pricing)
+		@marketable_volume = MarketableVolumeCalculator.new(DefaultMarketHistory.new)
 
 		# Create the objects needed to compute material costs.
 		blueprint_repository = BlueprintRepository.new()
@@ -41,7 +44,7 @@ class ManufacturingReport
 			.accept(@invention_calculator)
 			.accept(@pricing_calculator)
 			.accept(@production_time_calculator)
-			.sort_by { |n| n.data[:profit_margin] }
+			.accept@marketable_volume
 
 		@writer.write_build(build)
 

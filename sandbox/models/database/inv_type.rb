@@ -32,6 +32,13 @@ class InvType < ActiveRecord::Base
 		capital_ships: 1000000,
 	}
 
+	@@base_items = {
+		# "Improved Cloaking Device II" => "Prototype Cloaking Device I",
+		# "Covert Ops Cloaking Device II" => "Prototype Cloaking Device I",
+		# "Modulated Strip Miner II" => "Strip Miner I",
+		# "Modulated Deep Core Miner II" => "Deep Core Mining Laser I"
+	}
+
 	def packaged_volume
 		return volume unless in_market_group?(:ships)
 		@@packaged_volumes.detect { |k,v| in_market_group?(k) }[1]
@@ -44,7 +51,11 @@ class InvType < ActiveRecord::Base
 
 	def ram_type_requirements_for_invention
 		return [] unless inv_blueprint_type
-		base_item.inv_blueprint_type.ram_type_requirements_for_invention
+		begin
+			base_item.inv_blueprint_type.ram_type_requirements_for_invention
+		rescue
+			raise "Failed to find base_item for #{typeName}"
+		end
 	end	
 
 	def is_skill?
@@ -74,10 +85,16 @@ class InvType < ActiveRecord::Base
 	def base_item
 		return self unless is_techII?
 
-		# Not sure what the right wasy is to get the base item associated with a tech II item. 
+		# Not sure what the right way is to get the base item associated with a tech II item. 
+		# First we'll handle special cases.
+		if @@base_items.has_key? typeName
+			return InvType.find_by_typeName(typeName) 
+		end
+
 		# Maybe we can just sub I for II. 
 		if typeName.include? 'II'
-			return InvType.find_by_typeName(typeName.sub('II', 'I'))
+			item = InvType.find_by_typeName(typeName.sub('II', 'I'))
+			return item if !item.nil?
 		end
 
 		# Next we'll try an approach based on market groups.

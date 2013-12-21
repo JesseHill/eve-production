@@ -15,9 +15,10 @@ class ConsoleSerializer
 	end
 
 	def write_build(build, write_materials = false)
-		build.
-			sort_by { |node| node.data[:profit_per_hour] }.
-			each_with_depth { |node, depth| 
+		build
+			.select { |n| n.data[:marketable_profit_per_day] > 100000000 if n.data[:marketable_profit_per_day]}
+			.sort_by { |n| n.data[:profit_per_hour] }
+			.each_with_depth { |node, depth| 
 				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
 				if node.data[:invention_cost] > 0
 					write_line "Material Cost: #{Formatting.format_isk(node.data[:material_cost])}"
@@ -28,12 +29,20 @@ class ConsoleSerializer
 				end
 				write_line "Cost per unit: #{Formatting.format_isk(node.data[:cost_per_unit])}" if node.data[:cost_per_unit]
 				write_line "Value: #{Formatting.format_isk(node.data[:value])}"
-				write_line "Value Per Unit: #{Formatting.format_isk(node.data[:value_per_unit])}" if node.is_buildable?
+				write_line "Value per unit: #{Formatting.format_isk(node.data[:value_per_unit])}" if node.is_buildable?
 				write_line "Profit: #{Formatting.format_isk(node.data[:profit])}"
-				write_line "Profit Per Unit: #{Formatting.format_isk(node.data[:profit_per_unit])}" if node.is_buildable?
-				write_line "Profit Margin: #{(node.data[:profit_margin] * 100).round(2)} %"
-				write_line "Production Time: #{Formatting.format_time(node.data[:production_time])}"
-				write_line "Profit Per Hour: #{Formatting.format_isk(node.data[:profit_per_hour])}"
+				write_line "Profit per unit: #{Formatting.format_isk(node.data[:profit_per_unit])}" if node.is_buildable?
+				write_line "Profit margin: #{(node.data[:profit_margin] * 100).round(2)} %"
+				write_line "Production time: #{Formatting.format_time(node.data[:production_time])}"
+				write_line "Profit per hour: #{Formatting.format_isk(node.data[:profit_per_hour])}"
+				
+
+				if node.data[:marketable_volume_per_day]
+					write_line "Marketable volume per day : #{Formatting.format_quantity(node.data[:marketable_volume_per_day])}"
+					write_line "Marketable profit per day: #{Formatting.format_isk(node.data[:marketable_profit_per_day])}"
+					write_line "Marketable hourly profit: #{Formatting.format_isk(node.data[:marketable_hourly_profit])}"
+				end
+
 
                 if write_materials
                     write_line "Materials:"

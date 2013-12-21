@@ -1,9 +1,0 @@
-Condor: 4
-Punisher: 12
-Warp Disruptor I: 30
-Antimatter Reactor Unit: 198
-Magpulse Thruster: 168
-Radar Sensor Cluster: 966
-Scalar Capacitor Unit: 280
-Sustained Shield Emitter: 84
-Crucifier: 3
