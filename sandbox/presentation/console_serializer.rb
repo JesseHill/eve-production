@@ -59,7 +59,7 @@ class ConsoleSerializer
 	def write_shopping_list(list, title = "Shopping List")
 		write_banner title
 		list.each_with_depth { |node, depth|
-			if node.has_children?
+			if node.has_children? || depth == 0
 				write_line
 				write_line("#{node.name} - Volume: #{Formatting.format_volume(node.volume)} Cost: #{Formatting.format_isk(node.cost)}", depth)
 			else
@@ -71,7 +71,7 @@ class ConsoleSerializer
 	def write_retail_list(list, title = "Retail List")
 		write_banner title
 		list.each_with_depth { |node, depth|
-			if node.has_children?
+			if node.has_children? || depth == 0
 				write_line
 				write_line("#{node.name} - Volume: #{Formatting.format_volume(node.volume)} Value: #{Formatting.format_isk(node.value)}", depth)
 			else

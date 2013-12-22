@@ -6,6 +6,7 @@ class DecryptorRepository
 		amarr: "Occult",
 		caldari: "Esoteric",
 		gallente: "Incognito",
+		exhumers: "Incognito",
 		minmatar: "Cryptic"
 	}
 
@@ -70,9 +71,13 @@ class DecryptorRepository
 
 	def find(item, type)
 		raise 'Unsupported item. Sorry.' unless item.is_ship?
-		typeName = @@decryptor_types[type][:name]
-			.sub('#', @@race_map[item.inv_market_group.marketGroupName.downcase.to_sym])
-		InvType.find_by_typeName(typeName)
+		begin
+			typeName = @@decryptor_types[type][:name]
+				.sub('#', @@race_map[item.inv_market_group.marketGroupName.downcase.to_sym])
+			InvType.find_by_typeName(typeName)
+		rescue
+			raise "Error finding decryptor #{type} for #{item.inv_market_group.marketGroupName.downcase.to_sym}"
+		end
 	end
 
 	def types

@@ -11,7 +11,14 @@ class ProductionTimeCalculator
 		node.data[:production_time] = node.is_buildable? ?
 			calculate(node.blueprint, node.runs, node.options) :
 			node.children.inject(0) { |memo, n| memo + n.data[:production_time] }
-		node.data[:profit_per_hour] = node.data[:profit].to_f / node.data[:production_time] * 60 * 60
+		if node.data[:production_time] > 0
+			node.data[:profit_per_hour] = node.data[:profit].to_f / node.data[:production_time] * 60 * 60
+		else
+			node.data[:profit_per_hour] = node.data[:profit].to_f
+		end
+		puts "profit: #{node.data[:profit]}"
+		puts "production_time: #{node.data[:production_time]}"
+		raise "Error calculating profit for #{node.name}" if node.data[:profit_per_hour].nan?
 	end
 
 	def calculate(blueprint, runs, options = {})

@@ -50,8 +50,8 @@ describe InventionCostCalculator do
 		@pricing.expects(:buy_price).with(datacore_1).returns(100).once
 		@pricing.expects(:buy_price).with(datacore_2).returns(100).once
 		@pricing.expects(:buy_price).with(decryptor).returns(100).once
-		@prob_calc.expects(:chance).with(item).returns(0.25)
-		@prob_calc.expects(:runs).with(item).returns(2)
+		@prob_calc.expects(:chance).with(item, {}).returns(0.25)
+		@prob_calc.expects(:runs).with(item, {}).returns(2)
 
 		@calc.cost_per_run(item).should eq(1000)
 	end	

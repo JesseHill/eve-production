@@ -53,11 +53,9 @@ class MarketGroupReport
 		  leaf_groups.
 		  map { |g| g.marketGroupID }
 
-		jobs = InvType.
-			where(marketGroupID: group_ids).
-			map { |f|
-			  Job.new(f.typeID, 1)
-			}
+		jobs = InvType
+			.where(marketGroupID: group_ids)
+			.map { |f| Job.new(f.typeID, 1) }
 
 		@build = Build.new(group.marketGroupName, jobs)
 		@report = ReportFactory.create(report_type)
