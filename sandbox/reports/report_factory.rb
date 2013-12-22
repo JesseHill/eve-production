@@ -11,4 +11,5 @@ class ReportFactory
 
 		@report_types[report_type]	
 	end
+	
 end

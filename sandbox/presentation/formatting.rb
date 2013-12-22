@@ -35,8 +35,5 @@ class Formatting
 			"%d minutes and %d seconds" % [mm, ss]
 		end
 	end
+
 end
-
-
-
-

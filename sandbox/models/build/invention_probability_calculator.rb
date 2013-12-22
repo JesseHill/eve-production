@@ -34,8 +34,8 @@ class InventionProbabilityCalculator
 	end
 
 	def base_chance(item)
-		return 0.4 unless item.is_ship?		
 		return @@special_cases[item.typeName] if @@special_cases.has_key?(item.typeName)
+		return 0.4 unless item.is_ship?		
 		return 0.3 if item.in_market_group?(:frigates, :destroyers, :freighters)
 		return 0.25 if item.in_market_group?(:cruisers, :industrials)
 		0.2

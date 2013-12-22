@@ -29,4 +29,5 @@ class MaterialNode < ShoppingNode
 	def compute_cost
 		@cost = cost_per_unit * @quantity
 	end
+	
 end

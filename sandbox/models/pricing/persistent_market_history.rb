@@ -30,4 +30,5 @@ class PersistentMarketHistory
 	def name
 		@model.name
 	end
+  
 end

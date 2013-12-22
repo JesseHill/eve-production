@@ -17,4 +17,5 @@ class ReprocessingReport
 			.accept(@pricing_calculator)
 		@writer.write_reprocessing_data(build)
 	end
+	
 end

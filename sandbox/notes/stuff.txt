@@ -1,8 +1,6 @@
-- Blueprint repo should use decryptor strategy
+- Standard build options
 
 - Create templated rendering
-
-- Standard build options
 
 - Shopping list should use api to check owned materials
 

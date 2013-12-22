@@ -1,6 +1,7 @@
 require 'active_record'
 
 class InvCategory < ActiveRecord::Base
+  
 	self.table_name = "invCategories"
 	self.primary_key = "categoryID"
 
@@ -11,4 +12,5 @@ class InvCategory < ActiveRecord::Base
 	def is_ship?
 		categoryName == 'Ship'
 	end
+
 end

@@ -29,4 +29,5 @@ class QuickLookData
 			raise "Error loading #{uri(args)}"
 		end
 	end
+  
 end

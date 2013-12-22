@@ -18,6 +18,18 @@ class SevenDayTrailingAverage
 		@average_prices = {}
 	end
 
+  def volume(id)
+    fetch(id)
+    @volume[id] 
+  end
+
+  def average_price(id)
+    fetch(id)
+    @average_prices[id]
+  end
+
+  private  
+
 	def average(marketData, property)
 		data = marketData.css("row").collect { |n| n[property].to_f }
 		data.size > 0 ? 
@@ -26,23 +38,11 @@ class SevenDayTrailingAverage
 	end
 
 	def fetch(id)
+		id = id.typeID if id.is_a? InvType
+		return if @volume.has_key? id
 		marketData = Nokogiri::XML(@data_source.data(:type_ids => id))
 		@volume[id] = average(marketData, :volume)
 		@average_prices[id] = average(marketData, :avgPrice)
 	end	
-
-	def volume(id)
-		id = id.typeID if id.is_a? InvType
-		return @volume[id] if @volume.has_key? id
-		fetch(id)
-		@volume[id] 
-	end
-
-	def average_price(id)
-		id = id.typeID if id.is_a? InvType
-		return @average_prices[id] if @average_prices.has_key? id
-		fetch(id)
-		@average_prices[id]
-	end
 	
 end

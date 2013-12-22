@@ -65,6 +65,9 @@ if options.items.empty?
 end
 
 pricing = CompositePricingModel.new(
-  RetailMarkets.new.markets.map { |m| PersistentPricingModel.new(LowSellOrdersPricingModel.new(m)) })
+  RetailMarkets.new.markets.map do |m| 
+    PersistentPricingModel.new(LowSellOrdersPricingModel.new(m))
+  end
+)
 shopping_list = ShoppingList.new(pricing, options.items, :sell)
 ConsoleSerializer.new.write_retail_list(shopping_list)

@@ -53,4 +53,5 @@ class ManufacturingReport
 			@writer.write_shopping_list(shopping_list)
 		end
 	end
+
 end

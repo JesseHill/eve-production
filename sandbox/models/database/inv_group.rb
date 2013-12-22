@@ -2,6 +2,7 @@ require 'active_record'
 require_relative 'inv_category'
 
 class InvGroup < ActiveRecord::Base
+  
 	self.table_name = "invGroups"
 	self.primary_key = "groupID"
 
@@ -14,4 +15,5 @@ class InvGroup < ActiveRecord::Base
 	def is_ship?
 		inv_category.is_ship?
 	end
+
 end

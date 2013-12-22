@@ -1,4 +1,3 @@
-
 class ProductionInformation
 
 	attr_reader :industry_skill, :production_slot_modifier, :implant_modifier

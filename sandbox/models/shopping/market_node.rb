@@ -24,4 +24,5 @@ class MarketNode < ShoppingNode
 			a_index <=> b_index
 		end
 	end
+  
 end

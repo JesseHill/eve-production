@@ -14,7 +14,6 @@ class BpcDumpOptionsParser
 
   def self.create_job(info)
   	begin
-      # puts "Creating job with #{info[:name]}, #{info[:runs]}, #{info[:material_level]}"
   		Job.new(
         info[:name], 
         info[:runs], 

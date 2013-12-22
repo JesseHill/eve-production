@@ -2,6 +2,7 @@ require 'active_record'
 require 'active_support/inflector'
 
 class InvMarketGroup < ActiveRecord::Base
+  
 	self.table_name = "invMarketGroups"
 	self.primary_key = "marketGroupID"
 
@@ -20,9 +21,7 @@ class InvMarketGroup < ActiveRecord::Base
 	end
 
 	def leaf_groups
-		hasTypes ?
-			[self] :
-			child_groups.flat_map { |g| g.leaf_groups }
+		hasTypes ? [self] : child_groups.flat_map { |g| g.leaf_groups }
 	end
 
 end

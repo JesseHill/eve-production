@@ -15,8 +15,8 @@ require 'active_record'
 	# Commander Cruiser	
 	# Tech III	
 
-
 class InvMetaGroup < ActiveRecord::Base
+  
 	self.table_name = "invMetaGroups"
 	self.primary_key = "metaGroupID"
 
@@ -41,4 +41,5 @@ class InvMetaGroup < ActiveRecord::Base
 	def is_techIII?
 		metaGroupName == 'Tech III'
 	end
+
 end

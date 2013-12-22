@@ -8,6 +8,7 @@ require_relative 'inv_market_group'
 require_relative 'ram_type_requirement'
 
 class InvType < ActiveRecord::Base
+	
 	self.table_name = "invTypes"
 	self.primary_key = "typeID"
 	

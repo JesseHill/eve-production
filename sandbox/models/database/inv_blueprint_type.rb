@@ -1,6 +1,7 @@
 require 'active_record'
 
 class InvBlueprintType < ActiveRecord::Base
+  
 	self.table_name = "invBlueprintTypes"
 	self.primary_key = "blueprintTypeID"
 	
@@ -11,7 +12,7 @@ class InvBlueprintType < ActiveRecord::Base
 		RamTypeRequirement
 			.where(typeID: blueprintTypeID)
 			.joins(:ram_activity)
-			.where(ramActivities: {activityName: activityName.to_s.titleize})
+			.where(ramActivities: { activityName: activityName.to_s.titleize })
 	end
 
 	def ram_type_requirements_for_manufacturing
@@ -29,4 +30,5 @@ class InvBlueprintType < ActiveRecord::Base
 	def is_techII?
 		inv_type.is_techII?
 	end
+
 end

@@ -17,6 +17,16 @@ class LowSellOrdersPricingModel
 		@prices = {}
 	end
 
+	def buy_price(id)
+		price(id)
+	end	
+
+	def sell_price(id)
+		price(id)
+	end
+
+	private
+
 	def price(id)
 		id = id.typeID if id.is_a? InvType
 		return @prices[id] if @prices.has_key? id
@@ -32,12 +42,4 @@ class LowSellOrdersPricingModel
 		price
 	end
 
-	def buy_price(id)
-		price(id)
-	end	
-
-	def sell_price(id)
-		price(id)
-	end
-	
 end

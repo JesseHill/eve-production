@@ -18,7 +18,9 @@ class MaterialsCalculator
 			ram_type_requirements_for_manufacturing.
 			reject { |r| r.required_type.is_skill? }
 
-		base_materials = inv_type.inv_type_materials.each_with_object({}) { |m, h| h[m.required_type] = m.quantity }
+		base_materials = inv_type
+			.inv_type_materials
+			.each_with_object({}) { |m, h| h[m.required_type] = m.quantity }
 		without_recycleable = base_materials.merge(recyleable_requirements(ram_requirements)) { |k, l, r| l - r }
 		without_empty = without_recycleable.select { |k, v| v > 0 }
 		with_waste = without_empty.map do |type, quantity| # Adjust for waste and number of runs
@@ -43,4 +45,5 @@ class MaterialsCalculator
 				requirements.merge!(materials) { |k, l, r| l + r }
 			end
 	end
+  
 end	

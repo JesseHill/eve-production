@@ -1,16 +1,42 @@
 character_name: Tommy Morgan
-industry_skill_lebel: 5
-production_efficiencty_skill_level: 5
+api:
+	id: 94857574
+	key: alskd0889e9d78e7389d09d9d8d8dd8
+hangars:
+	marketable_items: Auviken VII - 8, Public
+	manufacturing_resources: Auviken VII - 8, Manufacturing
+skills:
+	industry: 5
+	production_efficiency: 5
+	gallente_encryption: 5
+	mechanical_engineering: 5
 decryptors:
 	frigates: Symmetry
 	ships: Process
-default_material_level: 60
+material_level: 100
 	ship equipment: 75
 	frigates: 25
 	ships: 50
-default_productivity_level: 15
+productivity_level: 15
+	frigates: 15
+	cruisers: 20
 
-marketable_volume_percentage: 0.1
+market_history:
+	regions: 100002
+	marketable_volume_percentage: 0.1
 
 production_slot_modifier: 1
 implant_modifier: 1
+
+# blueprint repo
+# decryptor strategy
+# invention_strategy
+# marketable_volume
+# production_information
+default_market_history
+default_markets
+persistent_market_history
+persistent_pricing_model
+retail_markets
+seven_day_trailing
+
