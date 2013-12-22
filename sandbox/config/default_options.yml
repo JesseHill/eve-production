@@ -4,7 +4,7 @@ api:
 	key: alskd0889e9d78e7389d09d9d8d8dd8
 hangars:
 	marketable_items: Auviken VII - 8, Public
-	manufacturing_resources: Auviken VII - 8, Manufacturing
+	available_resources: Auviken VII - 8, Manufacturing
 skills:
 	industry: 5
 	production_efficiency: 5
@@ -13,17 +13,22 @@ skills:
 decryptors:
 	frigates: Symmetry
 	ships: Process
-material_level: 100
+material_levels: 
+	default: 100
 	ship equipment: 75
 	frigates: 25
 	ships: 50
-productivity_level: 15
+productivity_levels: 
+	default: 15
 	frigates: 15
 	cruisers: 20
 
 market_history:
 	regions: 100002
 	marketable_volume_percentage: 0.1
+
+supply_markets: Jita, Amarr
+retail_markets: Jita, Amarr, Hek, Dodixie
 
 production_slot_modifier: 1
 implant_modifier: 1
@@ -33,10 +38,10 @@ implant_modifier: 1
 # invention_strategy
 # marketable_volume
 # production_information
-default_market_history
-default_markets
-persistent_market_history
-persistent_pricing_model
-retail_markets
+# default_market_history
+# default_markets
+# persistent_market_history
+# persistent_pricing_model
+# retail_markets
 seven_day_trailing
 

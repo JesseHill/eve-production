@@ -27,13 +27,11 @@ class Formatting
 		hh, mm = mm.divmod(60)
 		dd, hh = hh.divmod(24)
 
-		if dd > 0
-			"%d days, %d hours, %d minutes and %d seconds" % [dd, hh, mm, ss]
-		elsif hh > 0
-			"%d hours, %d minutes and %d seconds" % [hh, mm, ss]
-		else
-			"%d minutes and %d seconds" % [mm, ss]
-		end
+		["day", "hour", "minute", "second"]
+			.zip([dd, hh, mm, ss])
+      .select { |(k, v)| v > 0 }
+      .map { |(k, v)| v == 1 ? "#{v} #{k}" : "#{v} #{k}s" }
+      .to_sentence
 	end
 
 end

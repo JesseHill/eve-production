@@ -1,7 +1,22 @@
 - Standard build options
-
 - Create templated rendering
-
 - Shopping list should use api to check owned materials
-
 - Retail report should use api to check hangar
+
+
+60 manufacturing slots available
+60 research slots available
+
+
+Cruisers: 30 slots once per day == 30 invention runs == 10 3-run bpcs
+Frigates: 30 slots twice per day == 60 invention runs == 20 3-run bpcs
+Components: 30 slots 10 times per day == 300 invention runs == 150 10-run bpcs
+
+	Requires 6 mobile labs for invention slots
+	Requires 3 copy slots, 3 copy jobs
+
+Leaves 40 build slots
+	construction components
+	ram components
+	t1 ships
+
