@@ -18,13 +18,17 @@ describe DecryptorRepository do
 	end
 
 	it 'should answer the right decryptor for different types' do
-	 	@repo.find(InvType.find_by_typeName('Crow'), :symmetry)
+	 	@repo
+	 		.find(InvType.find_by_typeName('Crow'), :symmetry)
 	 		.should eq(InvType.find_by_typeName('Esoteric Symmetry'))	
-	 	@repo.find(InvType.find_by_typeName('Arazu'), :process)
+	 	@repo
+	 		.find(InvType.find_by_typeName('Arazu'), :process)
 	 		.should eq(InvType.find_by_typeName('Incognito Process'))	
-	 	@repo.find(InvType.find_by_typeName('Pilgrim'), :attainment)
+	 	@repo
+	 		.find(InvType.find_by_typeName('Pilgrim'), :attainment)
 	 		.should eq(InvType.find_by_typeName('Occult Attainment'))	
-	 	@repo.find(InvType.find_by_typeName('Rapier'), :augmentation)
+	 	@repo
+	 		.find(InvType.find_by_typeName('Rapier'), :augmentation)
 	 		.should eq(InvType.find_by_typeName('Cryptic Augmentation'))	
 	end	
 

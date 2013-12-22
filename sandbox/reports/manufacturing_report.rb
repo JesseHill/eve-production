@@ -22,19 +22,19 @@ class ManufacturingReport
 		@pricing_calculator = PricingCalculator.new(@pricing)
 		@marketable_volume = MarketableVolumeCalculator.new(DefaultMarketHistory.new)
 
-		# Create the objects needed to compute material costs.
-		blueprint_repository = BlueprintRepository.new
+		decryptor_repository = DecryptorRepository.new
+		decryptor_strategy = DecryptorStrategy.new(decryptor_repository)
+
+		blueprint_repository = BlueprintRepository.new(decryptor_repository, decryptor_strategy)
 		waste_calculator = WasteCalculator.new(5, blueprint_repository)
 		@materials_calculator = MaterialsCalculator.new(waste_calculator)
 
-		decryptor_repository = DecryptorRepository.new
-		invention_strategy = InventionStrategy.new(DecryptorStrategy.new(decryptor_repository))
+		invention_strategy = InventionStrategy.new(decryptor_strategy)
 		probability_calculator = InventionProbabilityCalculator.new(invention_strategy, decryptor_repository)
 		@invention_calculator = InventionCostCalculator.new(@pricing, probability_calculator, invention_strategy)
 
 		@production_time_calculator = ProductionTimeCalculator.new(blueprint_repository, ProductionInformation.new)
 
-		# Create our presentation object
 		@writer = ConsoleSerializer.new()
 	end
 
