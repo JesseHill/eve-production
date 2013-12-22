@@ -15,8 +15,8 @@ class ConsoleSerializer
 	end
 
 	def write_build(build, write_materials = false)
+			# .select { |n| n.data[:marketable_profit_per_day] > 100000000 if n.data[:marketable_profit_per_day]}
 		build
-			.select { |n| n.data[:marketable_profit_per_day] > 100000000 if n.data[:marketable_profit_per_day]}
 			.sort_by { |n| n.data[:profit_per_hour] }
 			.each_with_depth { |node, depth| 
 				write_banner(node.runs > 1 ? "#{node.name} - #{node.runs}" : node.name, depth == 0)
