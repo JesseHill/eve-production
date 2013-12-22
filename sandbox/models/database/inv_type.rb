@@ -71,6 +71,10 @@ class InvType < ActiveRecord::Base
 		inv_market_group.included_in?(group)
 	end	
 
+	def is_officer_or_faction?
+		inv_meta_group && (inv_meta_group.is_faction? || inv_meta_group.is_officer?)
+	end
+
 	def meta_level
 		DgmTypeAttributes.find_by(typeID: typeID, attributeID: 633).valueFloat
 	end
