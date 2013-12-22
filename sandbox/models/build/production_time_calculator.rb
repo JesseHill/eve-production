@@ -16,8 +16,6 @@ class ProductionTimeCalculator
 		else
 			node.data[:profit_per_hour] = node.data[:profit].to_f
 		end
-		puts "profit: #{node.data[:profit]}"
-		puts "production_time: #{node.data[:production_time]}"
 		raise "Error calculating profit for #{node.name}" if node.data[:profit_per_hour].nan?
 	end
 
