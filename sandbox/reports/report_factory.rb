@@ -3,13 +3,14 @@ require_relative 'reprocessing_report'
 
 class ReportFactory
 
-	def self.create(report_type)
-		@report_types = {
-			manufacturing: ManufacturingReport.new,
-			reprocessing: ReprocessingReport.new
-		}		
+	@@report_types = {
+		manufacturing: ManufacturingReport,
+		reprocessing: ReprocessingReport
+	}		
 
-		@report_types[report_type]	
+	def self.create(report_type)
+    raise "Unsupported report type: #{report_type}" unless @@report_types.has_key? report_type
+		@@report_types[report_type].send(:new)
 	end
-	
+
 end

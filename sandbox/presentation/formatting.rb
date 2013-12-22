@@ -30,7 +30,7 @@ class Formatting
 		["day", "hour", "minute", "second"]
 			.zip([dd, hh, mm, ss])
       .select { |(k, v)| v > 0 }
-      .map { |(k, v)| v == 1 ? "#{v} #{k}" : "#{v} #{k}s" }
+      .map { |(k, v)| "#{v} #{v == 1 ? k : k.pluralize}" }
       .to_sentence
 	end
 
