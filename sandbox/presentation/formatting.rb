@@ -6,9 +6,7 @@ class Formatting
 		Money.new(value * 100).format(
 			:symbol => "ISK", 
 			:symbol_position => :after,
-			:sign_before_symbol => true
-			# :sign_before_symbol => false
-		)
+			:sign_before_symbol => true)
 	end
 
 	def self.format_volume(value)

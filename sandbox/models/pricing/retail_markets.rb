@@ -5,9 +5,9 @@ class RetailMarkets
 	attr_accessor :markets
 
 	def initialize
-		@markets = ['Jita', 'Amarr', 'Hek', 'Dodixie'].map { |system|
+		@markets = ['Jita', 'Amarr', 'Hek', 'Dodixie'].map do |system|
 			MapSolarSystems.find_by_solarSystemName(system)
-		}
+		end
 	end
 
 end

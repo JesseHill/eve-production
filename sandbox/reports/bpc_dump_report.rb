@@ -92,4 +92,7 @@ if options.jobs.empty?
 	BpcDumpOptionsParser.parse(["-h"])
 	exit
 end
-ReportFactory.create(options.report_type).run(Build.new("BPC Build", options.jobs), {print_shopping_list: true})
+
+ReportFactory
+  .create(options.report_type)
+  .run(Build.new("BPC Build", options.jobs), {print_shopping_list: true})

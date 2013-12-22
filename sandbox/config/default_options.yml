@@ -1,0 +1,16 @@
+character_name: Tommy Morgan
+industry_skill_lebel: 5
+production_efficiencty_skill_level: 5
+decryptors:
+	frigates: Symmetry
+	ships: Process
+default_material_level: 60
+	ship equipment: 75
+	frigates: 25
+	ships: 50
+default_productivity_level: 15
+
+marketable_volume_percentage: 0.1
+
+production_slot_modifier: 1
+implant_modifier: 1

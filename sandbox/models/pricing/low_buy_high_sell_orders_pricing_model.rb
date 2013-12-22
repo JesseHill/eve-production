@@ -18,7 +18,7 @@ class LowBuyHighSellOrdersPricingModel
 	end
 
 	def load_prices(id)
-		return if @buy_prices.has_key?(id)
+		return if @buy_prices.has_key? id
 		marketData = Nokogiri::XML(@data_source.data(:typeid => id))
 		@buy_prices[id] = get_price(marketData, :buy)
 		@sell_prices[id] = get_price(marketData, :sell)
@@ -29,9 +29,9 @@ class LowBuyHighSellOrdersPricingModel
 	end
 
 	def get_price(marketData, type)
-		prices = marketData.css(selector(type)).
-			collect {|n| n.content.to_f}.
-			sort
+		prices = marketData.css(selector(type))
+			.collect {|n| n.content.to_f}
+			.sort
 		prices = prices.reverse if type == :sell
 		prices = prices.take(5)
 		prices.size > 0 ?

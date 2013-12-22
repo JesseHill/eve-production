@@ -8,9 +8,10 @@ class InvBlueprintType < ActiveRecord::Base
 	has_many :ram_type_requirements, :class_name => 'RamTypeRequirement', :foreign_key => 'typeID'
 
 	def ram_type_requirements_for(activityName)
-		RamTypeRequirement.where(typeID: blueprintTypeID).
-			joins(:ram_activity).
-			where(ramActivities: {activityName: activityName.to_s.titleize})
+		RamTypeRequirement
+			.where(typeID: blueprintTypeID)
+			.joins(:ram_activity)
+			.where(ramActivities: {activityName: activityName.to_s.titleize})
 	end
 
 	def ram_type_requirements_for_manufacturing

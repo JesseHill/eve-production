@@ -7,9 +7,7 @@ class DefaultMarketHistory
 	attr_accessor :history
 
 	def initialize
-		@history = PersistentMarketHistory.new(
-			SevenDayTrailingAverage.new(
-				MapRegions.find_by_regionName("The Forge")))
+		@history = PersistentMarketHistory.new(SevenDayTrailingAverage.new(MapRegions.find_by_regionName("The Forge")))
 	end	
 
 	def volume(item)

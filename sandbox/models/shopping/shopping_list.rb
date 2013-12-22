@@ -7,11 +7,7 @@ class ShoppingList < ShoppingNode
 		groups = type == :buy ?
 			markets.group_by_buy_price(materials) :
 			markets.group_by_sell_price(materials)
-			
-		@children =	groups.map do |market, materials_for_market|
-				MarketNode.new(market, materials_for_market)
-		end
-
+		@children =	groups.map { |market, materials_for_market| MarketNode.new(market, materials_for_market) }
 		super(type == :buy ? "Shopping List" : "Retail List", markets)
 	end
 

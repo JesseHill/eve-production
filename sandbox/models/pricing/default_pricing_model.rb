@@ -9,9 +9,9 @@ class DefaultPricingModel
 
 	def initialize
 		@pricing = CompositePricingModel.new(
-			DefaultMarkets.new().markets.map { |m|
+			DefaultMarkets.new.markets.map do |m|
 				PersistentPricingModel.new(LowSellOrdersPricingModel.new(m))
-			}
+			end
 		)
 	end
 

@@ -5,13 +5,7 @@ class DefaultMarkets
 	attr_accessor :markets
 
 	def initialize
-		# Create our pricing data.
-		@markets = ['Jita', 'Amarr'].map { |system|
-			MapSolarSystems.find_by_solarSystemName(system)
-		}
-		# @markets = ['Jita'].map { |system|
-		# 	MapSolarSystems.find_by_solarSystemName(system)
-		# }
+		@markets = ['Jita', 'Amarr'].map { |system| MapSolarSystems.find_by_solarSystemName(system) }
 	end
 
 end

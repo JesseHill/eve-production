@@ -23,7 +23,7 @@ class InventionCostCalculator
 
 	def cost(item, options = {})
 		return 0 unless item.is_techII?
-		materials(item, options).inject(0) { |memo,(i,q)| memo + @pricing.buy_price(i) * q }
+		materials(item, options).inject(0) { |memo, (i,q)| memo + @pricing.buy_price(i) * q }
 	end
 
 	def cost_per_run(item, options = {})

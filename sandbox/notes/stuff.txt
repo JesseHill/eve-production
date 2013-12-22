@@ -1,0 +1,9 @@
+- Create templated rendering
+
+- Standard build options
+
+- Shopping list should use api to check owned materials
+
+- Blueprint repo should use decryptor strategy
+
+- Retail report should use api to check hangar

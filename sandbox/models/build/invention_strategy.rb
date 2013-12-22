@@ -1,4 +1,3 @@
-
 class InventionStrategy
 
 	attr_reader :encryption_skill, :data_skill_one, :data_skill_two

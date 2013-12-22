@@ -56,7 +56,6 @@ class MarketGroupReport
 		jobs = InvType
 			.where(marketGroupID: group_ids)
 			.map { |f| Job.new(f.typeID, 1) }
-			# .select {|job| job.item.is_techI? }
 
 		@build = Build.new(group.marketGroupName, jobs)
 		@report = ReportFactory.create(report_type)

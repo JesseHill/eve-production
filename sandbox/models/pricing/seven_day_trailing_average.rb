@@ -19,11 +19,10 @@ class SevenDayTrailingAverage
 	end
 
 	def average(marketData, property)
-		data = marketData.css("row").collect {|n| n[property].to_f}
+		data = marketData.css("row").collect { |n| n[property].to_f }
 		data.size > 0 ? 
 			(data.inject(0.0) {|sum, el| sum + el} / data.size).round : 
 			0
-
 	end
 
 	def fetch(id)
@@ -34,14 +33,14 @@ class SevenDayTrailingAverage
 
 	def volume(id)
 		id = id.typeID if id.is_a? InvType
-		return @volume[id] if @volume.has_key?(id)
+		return @volume[id] if @volume.has_key? id
 		fetch(id)
 		@volume[id] 
 	end
 
 	def average_price(id)
 		id = id.typeID if id.is_a? InvType
-		return @average_prices[id] if @average_prices.has_key?(id)
+		return @average_prices[id] if @average_prices.has_key? id
 		fetch(id)
 		@average_prices[id]
 	end

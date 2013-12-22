@@ -10,16 +10,16 @@ class ReprocessingCalculator
 			node.data[:reprocessing_cost_per_unit] = @market_data.buy_price(node)	
 			node.data[:reprocessing_cost] = node.runs * node.data[:reprocessing_cost_per_unit]
 		else
-			node.data[:reprocessing_cost] = node.children.reduce(0) { |memo, node| 
+			node.data[:reprocessing_cost] = node.children.reduce(0) do |memo, node| 
 				memo += node.data[:reprocessing_cost] 
-			}	
+			end
 		end
 
 		# Value
-		node.data[:reprocessing_value] = node.data[:recyclable_materials].
-			reduce(0) { |memo, (material, quantity)|
+		node.data[:reprocessing_value] = node.data[:recyclable_materials]
+			.reduce(0) do |memo, (material, quantity)|
 				memo + @market_data.sell_price(material) * quantity * node.runs
-			}
+			end
 
 		# Profit
 		node.data[:reprocessing_profit] = node.data[:reprocessing_value] - node.data[:reprocessing_cost]

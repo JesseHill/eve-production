@@ -15,7 +15,7 @@ class Node
 	end	
 
 	def accept(visitor)
-		self.clone.tap { |copy|
+		clone.tap { |copy|
 			copy.data = @data.clone
 			copy.children = @children.map { |c| c.accept(visitor) }
 			visitor.visit(copy)
@@ -35,14 +35,14 @@ class Node
 	end	
 
 	def sort_by(&block)
-		self.clone.tap { |copy|
+		clone.tap { |copy|
 			copy.data = @data.clone
 			copy.children = @children.sort_by(&block)
 		}
 	end
 
 	def select(&block)
-		self.clone.tap { |copy|
+		clone.tap { |copy|
 			copy.data = @data.clone
 			copy.children = @children.select(&block)
 		}

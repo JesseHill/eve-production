@@ -80,4 +80,7 @@ if options.jobs.empty?
 	LineItemOptionsParser.parse(["-h"])
 	exit
 end
-ReportFactory.create(options.report_type).run(Build.new("Line Item Build", options.jobs), {print_shopping_list: true})
+
+ReportFactory
+  .create(options.report_type)
+  .run(Build.new("Line Item Build", options.jobs), {print_shopping_list: true})
