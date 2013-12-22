@@ -18,12 +18,12 @@ require_relative '../presentation/console_serializer'
 class ManufacturingReport
 
 	def initialize
-		@pricing = DefaultPricingModel.new().pricing
+		@pricing = DefaultPricingModel.new.pricing
 		@pricing_calculator = PricingCalculator.new(@pricing)
 		@marketable_volume = MarketableVolumeCalculator.new(DefaultMarketHistory.new)
 
 		# Create the objects needed to compute material costs.
-		blueprint_repository = BlueprintRepository.new()
+		blueprint_repository = BlueprintRepository.new
 		waste_calculator = WasteCalculator.new(5, blueprint_repository)
 		@materials_calculator = MaterialsCalculator.new(waste_calculator)
 

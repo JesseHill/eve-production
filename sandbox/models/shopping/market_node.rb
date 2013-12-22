@@ -1,12 +1,11 @@
 require_relative 'shopping_node'
 require_relative 'group_node'
 
-class MarketNode  < ShoppingNode
+class MarketNode < ShoppingNode
 
 	@@selected_groups = ['Minerals', 'Construction Components', 'Planetary Materials']
 
 	def initialize(market, materials)
-
 		@children = materials.group_by { |m, _| group(m.inv_market_group) }.map { |group, materials_for_group|
 			GroupNode.new(market, group, materials_for_group)
 		}

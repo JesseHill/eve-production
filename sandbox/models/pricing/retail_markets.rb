@@ -1,17 +1,13 @@
 require_relative '../database/map_solar_systems'
 
-class DefaultMarkets
+class RetailMarkets
 
 	attr_accessor :markets
 
 	def initialize
-		# Create our pricing data.
-		@markets = ['Jita', 'Amarr'].map { |system|
+		@markets = ['Jita', 'Amarr', 'Hek', 'Dodixie'].map { |system|
 			MapSolarSystems.find_by_solarSystemName(system)
 		}
-		# @markets = ['Jita'].map { |system|
-		# 	MapSolarSystems.find_by_solarSystemName(system)
-		# }
 	end
 
 end

@@ -56,8 +56,8 @@ class ConsoleSerializer
             }
     end
 
-	def write_shopping_list(list)
-		write_banner "Shopping List:"
+	def write_shopping_list(list, title = "Shopping List")
+		write_banner title
 		list.each_with_depth { |node, depth|
 			if node.has_children?
 				write_line
@@ -67,6 +67,18 @@ class ConsoleSerializer
 			end	
 		}			
 	end
+
+	def write_retail_list(list, title = "Retail List")
+		write_banner title
+		list.each_with_depth { |node, depth|
+			if node.has_children?
+				write_line
+				write_line("#{node.name} - Volume: #{Formatting.format_volume(node.volume)} Value: #{Formatting.format_isk(node.value)}", depth)
+			else
+				write_line("#{Formatting.format_quantity(node.quantity)} - #{node.name} - #{Formatting.format_isk(node.value_per_unit)} - #{Formatting.format_isk(node.value)}", depth)
+			end	
+		}			
+	end	
 
 	def write_reprocessing_data(build)
 		build.

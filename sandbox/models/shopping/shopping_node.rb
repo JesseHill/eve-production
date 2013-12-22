@@ -1,12 +1,13 @@
 class ShoppingNode
 
-	attr_accessor :name, :children, :volume, :cost
+	attr_accessor :name, :children, :volume, :cost, :value
 
 	def initialize(name, pricing)
 		@name = name
 		@pricing = pricing
 		compute_volume
 		compute_cost
+		compute_value
 		sort_children
 	end
 
@@ -24,6 +25,10 @@ class ShoppingNode
 
 	def compute_cost
 		@cost = @children.reduce(0) { |memo, node| memo + node.cost }
+	end
+	
+	def compute_value
+		@value = @children.reduce(0) { |memo, node| memo + node.value }
 	end
 
 	def each(direction = :top_down, &block)

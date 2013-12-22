@@ -3,14 +3,16 @@ require_relative 'market_node'
 
 class ShoppingList < ShoppingNode
 
-	def initialize(markets, materials)
-		@children = markets.
-			group_by_buy_price(materials).
-			map { |market, materials_for_market|
+	def initialize(markets, materials, type = :buy)
+		groups = type == :buy ?
+			markets.group_by_buy_price(materials) :
+			markets.group_by_sell_price(materials)
+			
+		@children =	groups.map do |market, materials_for_market|
 				MarketNode.new(market, materials_for_market)
-			}
+		end
 
-		super("Shopping List", markets)
+		super(type == :buy ? "Shopping List" : "Retail List", markets)
 	end
 
 end

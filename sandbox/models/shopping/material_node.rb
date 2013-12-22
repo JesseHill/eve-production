@@ -17,6 +17,14 @@ class MaterialNode < ShoppingNode
 	def cost_per_unit
 		@pricing.buy_price(@item)		
 	end
+	
+	def value_per_unit
+		@pricing.sell_price(@item)		
+	end
+
+	def compute_value
+		@value = value_per_unit * @quantity
+	end	
 
 	def compute_cost
 		@cost = cost_per_unit * @quantity

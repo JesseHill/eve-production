@@ -26,4 +26,13 @@ class CompositePricingModel
 			}
 		}	
 	end
+
+	def group_by_sell_price(materials)
+		Hash.new { |hash, key| hash[key] = Hash.new(0) }.tap { |groups|
+			materials.each { |material, quantity|
+				best_market = @models.max_by { |model| model.sell_price(material) }
+				groups[best_market][material] += quantity
+			}
+		}	
+	end	
 end
