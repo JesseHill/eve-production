@@ -43,5 +43,6 @@ implant_modifier: 1
 # persistent_market_history
 # persistent_pricing_model
 # retail_markets
-seven_day_trailing
+# seven_day_trailing
+
 

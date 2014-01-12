@@ -19,7 +19,7 @@ class PricingCalculator
 			memo += costs[:total]
 		end
 		node.data[:cost] = node.data[:material_cost] + (node.data[:invention_cost] || 0)
-		node.data[:cost_per_unit] = node.data[:cost] / node.runs if node.is_buildable?
+		node.data[:cost_per_unit] = node.data[:cost] / node.runs / node.item.portionSize if node.is_buildable?
 	end
 
 	def compute_value(node)
@@ -27,7 +27,7 @@ class PricingCalculator
 			node.data[:value_per_unit] = @market_data.sell_price(node.typeID)	
 			node.data[:value] = node.runs * node.data[:value_per_unit] * node.portionSize
 		else
-			node.data[:value] = node.children.reduce(0) { |memo, node| memo += node.data[:value] }	
+			node.data[:value] = node.children.reduce(0) { |memo, node| memo += node.data[:value] }	* node.runs
 		end
 	end
 

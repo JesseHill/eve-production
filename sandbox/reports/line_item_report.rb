@@ -31,18 +31,21 @@ class LineItemOptionsParser
 
   def self.build_jobs_from_text(jobText)
   	begin
-      	pairs = Hash[*jobText.split(/[:\n]+/)]
+        pairs = jobText
+          .lines
+          .reject { |line| line.strip.empty? || line.strip.start_with?("#") }
+          .map { |line| line.split(" - ")[0..1] }
   	rescue
   		puts "\nError parsing job text: \"#{jobText}\"\n"
-  		puts opts.help
   		exit
   	end
-  	pairs.map { |k, v| create_job(k, v) }
+  	pairs.map { |quantity, item| create_job(item.strip, quantity.gsub(",", "").strip) }
   end
 
   def self.parse(args)
     options = OpenStruct.new
     options.jobs = []
+    options.runs = 1
     options.report_type = :manufacturing
 
     opt_parser = OptionParser.new do |opts|
@@ -56,7 +59,11 @@ class LineItemOptionsParser
       	options.jobs.push *build_jobs_from_text(jobText)
       end
 
-      opts.on("-r", "--report REPORT_TYPE", "Specify a report type to run.") do |report|
+      opts.on("-r", "--runs RUNS", "Specify a number of runs.") do |runs|
+        options.runs = runs.to_i
+      end      
+
+      opts.on("-t", "--type REPORT_TYPE", "Specify a report type to run.") do |report|
         options.report_type = report.to_sym
       end      
 
@@ -83,4 +90,4 @@ end
 
 ReportFactory
   .create(options.report_type)
-  .run(Build.new("Line Item Build", options.jobs), {print_shopping_list: true})
+  .run(Build.new("Line Item Build", options.runs, options.jobs), {print_shopping_list: true})

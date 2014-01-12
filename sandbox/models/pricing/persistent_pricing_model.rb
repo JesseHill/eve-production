@@ -4,7 +4,7 @@ require_relative '../database/inv_type'
 
 class PersistentPricingModel
 
-	def initialize(model, basePath = './data/pricing/default', expiration = 1000 * 60 * 60 * 24)
+	def initialize(model, basePath = './data/pricing/default', expiration = 1 * 60 * 60 * 24)
 		@model = model
 		@buy_prices = Moneta.new(:PStore, :file => "#{basePath}_#{model.name}_buy.pstore", :expires => true)
 		@sell_prices = Moneta.new(:PStore, :file => "#{basePath}_#{model.name}_sell.pstore", :expires => true)

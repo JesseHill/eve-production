@@ -46,7 +46,7 @@ class ManufacturingReport
 			.accept(@production_time_calculator)
 			.accept@marketable_volume
 
-		@writer.write_build(build)
+		@writer.write_build(build, true)
 
 		if options[:print_shopping_list]
 			shopping_list = ShoppingList.new(@pricing, build.data[:materials])

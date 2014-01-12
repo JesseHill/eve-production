@@ -6,6 +6,7 @@ class DefaultMarkets
 
 	def initialize
 		@markets = ['Jita', 'Amarr'].map { |system| MapSolarSystems.find_by_solarSystemName(system) }
+		#@markets = ['Jita'].map { |system| MapSolarSystems.find_by_solarSystemName(system) }
 	end
 
 end

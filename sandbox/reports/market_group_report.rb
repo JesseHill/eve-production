@@ -57,12 +57,12 @@ class MarketGroupReport
 			.where(marketGroupID: group_ids)
 			.map { |f| Job.new(f.typeID, 1) }
 
-		@build = Build.new(group.marketGroupName, jobs)
+		@build = Build.new(group.marketGroupName, 1, jobs)
 		@report = ReportFactory.create(report_type)
 	end
 
 	def run()
-		@report.run(@build, {print_shopping_list: false})		
+		@report.run(@build, {print_shopping_list: true})		
 	end
 end
 

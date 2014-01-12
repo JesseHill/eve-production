@@ -8,7 +8,7 @@ class ProductionTimeCalculator
 	def visit(node)
 		node.data[:production_time] = node.is_buildable? ?
 			calculate(node.blueprint, node.runs, node.options) :
-			node.children.inject(0) { |memo, n| memo + n.data[:production_time] }
+			node.children.inject(0) { |memo, n| memo + n.data[:production_time] } * node.runs
 		if node.data[:production_time] > 0
 			node.data[:profit_per_hour] = node.data[:profit].to_f / node.data[:production_time] * 60 * 60
 		else

@@ -94,4 +94,4 @@ end
 
 ReportFactory
   .create(options.report_type)
-  .run(Build.new("BPC Build", options.jobs), {print_shopping_list: true})
+  .run(Build.new("BPC Build", 1, options.jobs), {print_shopping_list: true})

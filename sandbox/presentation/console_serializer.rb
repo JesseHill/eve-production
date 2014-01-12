@@ -16,6 +16,7 @@ class ConsoleSerializer
 
 	def write_build(build, write_materials = false)
 			# .select { |n| n.data[:marketable_profit_per_day] > 100000000 if n.data[:marketable_profit_per_day]}
+	  		# .sort_by { |n| n.data[:production_time] }
 		build
 			.sort_by { |n| n.data[:profit_per_hour] }
 			.each_with_depth do |node, depth| 
@@ -43,15 +44,19 @@ class ConsoleSerializer
 					write_line "Marketable hourly profit: #{Formatting.format_isk(node.data[:marketable_hourly_profit])}"
 				end
 
-        if write_materials
-            write_line "Materials:"
-            costs = node.data[:material_costs]
-            node.data[:materials].each do |m, q|
-                per_unit = Formatting.format_isk(costs[m][:per_unit])
-                total = Formatting.format_isk(costs[m][:total]	)
-                write_line("#{Formatting.format_quantity(q)} #{m.typeName} - per unit: #{per_unit} - total: #{total}", 1)
-            end
-        end
+	    	    if write_materials
+		            write_line "Materials:"
+		            costs = node.data[:material_costs]
+		            node.data[:materials].each do |m, q|
+	                per_unit = Formatting.format_isk(costs[m][:per_unit])
+	                total = Formatting.format_isk(costs[m][:total]	)
+	                write_line("#{Formatting.format_quantity(q)} #{m.typeName} - per unit: #{per_unit} - total: #{total}", 1)
+	            end
+	        end
+
+        write_line "#{Formatting.format_time(node.data[:production_time])} - #{node.name}"
+        # write_line "#{node.data[:production_time]} - #{node.data[:production_time].to_f / 6630 } - #{node.name}"
+
       end
   end
 

@@ -7,9 +7,12 @@ class MaterialsCalculator
 	end
 
 	def visit(node)
-		node.data[:materials] = node.is_buildable? ?
-			required_materials(node.blueprint, node.runs, node.options) :
-			node.children.each_with_object({}) { |n, h| h.merge!(n.data[:materials]) { |k, l, r| l + r } }
+		if node.is_buildable?
+			node.data[:materials] = required_materials(node.blueprint, node.runs, node.options)
+		else
+			child_materials = node.children.each_with_object({}) { |n, h| h.merge!(n.data[:materials]) { |k, l, r| l + r } }
+			node.data[:materials] = child_materials.inject({}) { |h, (k, v)| h[k] = v * node.runs; h }
+		end
 	end	
 
 	def required_materials(blueprint, runs, options = {})
