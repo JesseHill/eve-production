@@ -13,7 +13,8 @@ require_relative '../models/build/marketable_volume_calculator'
 require_relative '../models/pricing/default_pricing_model'
 require_relative '../models/pricing/default_market_history'
 require_relative '../models/shopping/shopping_list'
-require_relative '../presentation/console_serializer'
+# require_relative '../presentation/console_serializer'
+require_relative '../presentation/report_serializer'
 
 class ManufacturingReport
 
@@ -35,7 +36,8 @@ class ManufacturingReport
 
 		@production_time_calculator = ProductionTimeCalculator.new(blueprint_repository, ProductionInformation.new)
 
-		@writer = ConsoleSerializer.new()
+		# @writer = ConsoleSerializer.new
+		@writer = ReportSerializer.new
 	end
 
 	def run(build, options = {})
@@ -46,12 +48,8 @@ class ManufacturingReport
 			.accept(@production_time_calculator)
 			.accept@marketable_volume
 
-		@writer.write_build(build, true)
-
-		if options[:print_shopping_list]
-			shopping_list = ShoppingList.new(@pricing, build.data[:materials])
-			@writer.write_shopping_list(shopping_list)
-		end
+		shopping_list = ShoppingList.new(@pricing, build.data[:materials])
+		@writer.write(build, shopping_list, options)
 	end
 
 end

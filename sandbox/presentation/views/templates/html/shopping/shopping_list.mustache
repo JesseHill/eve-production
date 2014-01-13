@@ -1,0 +1,13 @@
+<div id="shopping_list">
+	<table class="table table-bordered">
+	<thead>
+		<tr><th>Shopping List</th><th>Cost</th><th>Cost per Unit</th></tr>
+	</thead>
+	<tbody>
+	<tr class="all-items-row"><td class="label-column">All Items - {{volume}}</td><td>{{cost}}</td><td></td></tr>
+	{{#children}}
+		{{{render}}}
+	{{/children}}
+	</tbody>
+	</table>
+</div>

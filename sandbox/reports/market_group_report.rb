@@ -14,6 +14,9 @@ class MarketGroupOptionsParser
     options = OpenStruct.new
     options.jobs = []
     options.report_type = :manufacturing
+    options.output_format = :text
+    options.print_shopping_list = true
+    options.print_materials = true
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: market_group_report.rb [options]"
@@ -29,6 +32,10 @@ class MarketGroupOptionsParser
 
       opts.on("-r", "--report REPORT_TYPE", "Specify a report type to run.") do |report|
       	options.report_type = report.to_sym
+      end      
+
+      opts.on("-o", "--output OUTPUT_FORMAT", "Specify an output format (text or html).") do |format|
+        options.output_format = format.to_sym
       end      
 
       opts.on_tail("-h", "--help", "Show this message") do
@@ -61,8 +68,8 @@ class MarketGroupReport
 		@report = ReportFactory.create(report_type)
 	end
 
-	def run()
-		@report.run(@build, {print_shopping_list: true})		
+	def run(options = {})
+		@report.run(@build, options)		
 	end
 end
 
@@ -74,5 +81,5 @@ if !ARGV.empty?
 		MarketGroupOptionsParser.parse(["-h"])
 		exit
 	end
-	MarketGroupReport.new(options.marketGroupID, options.report_type).run
+	MarketGroupReport.new(options.marketGroupID, options.report_type).run(options)
 end
