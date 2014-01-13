@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{title}}</title>
+
+		<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+
+		<!-- Bootstrap files -->
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+		<style>
+			body {
+				margin: 1em auto;
+				width: 800px;
+			}
+			thead {
+				background: #ddd;
+			}
+			.table-condensed thead {
+				background: #fff;
+			}
+			.label-column {
+				width: 16em;
+			}
+			.all-items-row {
+				background: #fff;
+			}
+			.market-row {
+				background: #eee;
+			}
+		</style>
+	</head>
+	<body>
+		{{#build}}
+			{{{render}}}
+		{{/build}}
+	</body>
+</html>

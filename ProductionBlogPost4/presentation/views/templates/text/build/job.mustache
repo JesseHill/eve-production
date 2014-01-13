@@ -1,0 +1,30 @@
+--------------------------------------------------
+{{title}} - {{runs}}
+--------------------------------------------------
+{{#has_invention_cost?}}
+Material Cost: {{material_cost}}
+Invention Cost: {{invention_cost}}
+Total Cost: {{cost}}
+{{/has_invention_cost?}}
+{{^has_invention_cost?}}
+Cost: {{cost}}
+{{/has_invention_cost?}}
+Cost per unit: {{cost_per_unit}}
+Value: {{value}}
+Value per unit: {{value_per_unit}}
+Profit: {{profit}}
+Profit per unit: {{profit_per_unit}}
+Profit margin: {{profit_margin}}
+Production time: {{production_time}}
+Profit per hour: {{profit_per_hour}}
+{{#has_marketing_stats?}}
+Marketable volume per day: {{marketable_volume_per_day}}
+Marketable profit per day: {{marketable_profit_per_day}}
+Marketable hourly profit: {{marketable_hourly_profit}}
+{{/has_marketing_stats?}}
+{{#print_materials?}}
+Materials:
+{{#materials}}
+	{{render}}
+{{/materials}}
+{{/print_materials?}}

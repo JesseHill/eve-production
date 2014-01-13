@@ -1,0 +1,19 @@
+
+<div id="build">
+	<table class="table table-bordered jumbotron">
+	<thead>
+		<tr><th colspan="3">{{title}}</th></tr>
+	</thead>
+	<tbody>
+		<tr><td class="label-column">Cost</td><td>{{cost}}</td></tr>
+		<tr><td class="label-column">Value</td><td>{{value}}</td></tr>
+		<tr><td class="label-column">Profit</td><td>{{profit}}</td></tr>
+		<tr><td class="label-column">Profit margin</td><td>{{profit_margin}}</td></tr>
+	</tbody>
+	</table>
+
+	{{#children}}
+		{{{render}}}
+	{{/children}}
+</div>
+
